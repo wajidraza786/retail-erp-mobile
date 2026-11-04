@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>html,body{margin:0;background:#e6e1d6;font-family:'DM Sans',system-ui,sans-serif;color:#17161c;-webkit-font-smoothing:antialiased}*{box-sizing:border-box}a{color:#2a5fd6}a:hover{color:#17161c}button,input{font-family:inherit}input::placeholder{color:#a19ea8}</style>
+</helmet>
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 16px">
+<div style="position:relative;width:390px;height:844px;border-radius:52px;background:#f4f1ea;overflow:hidden;box-shadow:0 0 0 11px #17161c,0 0 0 13px #3a3842,0 40px 80px rgba(23,22,28,.35);flex:none" data-screen-label="App">
+
+<!-- HOME -->
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;top:0;left:0;right:0;bottom:84px;overflow-y:auto;scrollbar-width:none" data-screen-label="Home">
+<div style="padding:58px 20px 6px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+<div><div style="font-size:13px;color:#6b6874">{{ home.dateLabel }}</div><div style="font:800 27px/1.1 'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em;margin-top:2px">Raza Mobile Hub</div></div>
+<div style="width:44px;height:44px;border-radius:22px;background:#17161c;color:#fff;display:flex;align-items:center;justify-content:center;font:700 14px 'Bricolage Grotesque',sans-serif;flex:none">RM</div>
+</div>
+<div onClick="{{ home.openSales }}" style="margin:14px 16px 0;background:#0b8049;color:#fff;border-radius:28px;padding:20px 20px 16px;cursor:pointer">
+<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:14px;font-weight:500">Today's sales</span><span style="font-size:12px;font-weight:600;background:rgba(255,255,255,.18);padding:4px 10px;border-radius:99px">{{ home.todayCount }}</span></div>
+<div style="font:800 42px/1.05 'Bricolage Grotesque',sans-serif;letter-spacing:-0.03em;margin-top:6px;font-variant-numeric:tabular-nums">{{ home.todaySales }}</div>
+<div style="display:flex;align-items:flex-end;gap:8px;height:92px;margin-top:14px">
+<sc-for list="{{ home.week }}" as="w" hint-placeholder-count="7">
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;justify-content:flex-end;height:100%">
+<div style="width:100%;height:{{ w.h }};border-radius:8px;background:{{ w.bg }}"></div>
+<span style="font-size:11px;font-weight:600;opacity:{{ w.op }}">{{ w.label }}</span></div>
+</sc-for></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 16px 0">
+<div onClick="{{ home.openCash }}" style="background:#6d3fd6;color:#fff;border-radius:24px;padding:16px;cursor:pointer;min-height:112px;display:flex;flex-direction:column;justify-content:space-between">
+<span style="font-size:13px;font-weight:500">Cash in hand</span>
+<div><div style="font:800 22px 'Bricolage Grotesque',sans-serif;font-variant-numeric:tabular-nums">{{ home.cash }}</div><div style="font-size:12px;margin-top:2px">Bank {{ home.bank }}</div></div></div>
+<div onClick="{{ home.openPL }}" style="background:#d9472b;color:#fff;border-radius:24px;padding:16px;cursor:pointer;min-height:112px;display:flex;flex-direction:column;justify-content:space-between">
+<span style="font-size:13px;font-weight:500">Profit this month</span>
+<div><div style="font:800 22px 'Bricolage Grotesque',sans-serif;font-variant-numeric:tabular-nums">{{ home.profit }}</div><div style="font-size:12px;margin-top:2px">After all expenses</div></div></div>
+<div onClick="{{ home.openCustomers }}" style="background:#fff;border-radius:24px;padding:16px;cursor:pointer;min-height:100px;display:flex;flex-direction:column;justify-content:space-between">
+<span style="font-size:13px;font-weight:500;color:#6b6874">To receive</span>
+<div><div style="font:800 21px 'Bricolage Grotesque',sans-serif;color:#0b8049;font-variant-numeric:tabular-nums">{{ home.receivable }}</div><div style="font-size:12px;color:#6b6874;margin-top:2px">{{ home.receivableSub }}</div></div></div>
+<div onClick="{{ home.openSuppliers }}" style="background:#fff;border-radius:24px;padding:16px;cursor:pointer;min-height:100px;display:flex;flex-direction:column;justify-content:space-between">
+<span style="font-size:13px;font-weight:500;color:#6b6874">To pay</span>
+<div><div style="font:800 21px 'Bricolage Grotesque',sans-serif;color:#2a5fd6;font-variant-numeric:tabular-nums">{{ home.payable }}</div><div style="font-size:12px;color:#6b6874;margin-top:2px">{{ home.payableSub }}</div></div></div>
+</div>
+<div style="font:700 17px 'Bricolage Grotesque',sans-serif;margin:24px 20px 12px">Quick actions</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 16px">
+<sc-for list="{{ home.actions }}" as="a" hint-placeholder-count="4">
+<button onClick="{{ a.tap }}" style="border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;color:#17161c">
+<div style="width:100%;aspect-ratio:1;border-radius:22px;background:{{ a.bg }};color:#fff;display:flex;align-items:center;justify-content:center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ a.icon }}"></path></svg></div>
+<span style="font-size:12px;font-weight:600;text-align:center;line-height:1.2">{{ a.label }}</span></button>
+</sc-for></div>
+<sc-if value="{{ home.hasLow }}" hint-placeholder-val="{{ true }}">
+<div style="margin:24px 16px 0;background:#f0a020;border-radius:26px;padding:16px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin:0 4px 12px"><span style="font:700 17px 'Bricolage Grotesque',sans-serif">Running low</span><span style="font-size:13px;font-weight:600">{{ home.lowCount }}</span></div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<sc-for list="{{ home.low }}" as="p" hint-placeholder-count="3">
+<div onClick="{{ p.open }}" style="background:#fff;border-radius:16px;padding:11px 14px;display:flex;align-items:center;gap:10px;cursor:pointer">
+<div style="flex:1;min-width:0;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</div>
+<span style="font-size:12px;font-weight:700;color:#b3301a;background:#fde0d8;padding:3px 9px;border-radius:99px;white-space:nowrap">{{ p.stockLabel }}</span></div>
+</sc-for></div></div>
+</sc-if>
+<div style="font:700 17px 'Bricolage Grotesque',sans-serif;margin:24px 20px 12px">Reports</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px">
+<sc-for list="{{ reportTiles }}" as="r" hint-placeholder-count="4">
+<div onClick="{{ r.open }}" style="background:#fff;border-radius:20px;padding:14px;cursor:pointer;display:flex;flex-direction:column;gap:10px">
+<div style="width:28px;height:28px;border-radius:9px;background:{{ r.color }}"></div>
+<div><div style="font-size:14px;font-weight:700">{{ r.title }}</div><div style="font-size:12px;color:#6b6874;margin-top:2px;font-variant-numeric:tabular-nums">{{ r.figure }}</div></div></div>
+</sc-for></div>
+<div style="font:700 17px 'Bricolage Grotesque',sans-serif;margin:24px 20px 12px">Recent activity</div>
+<div style="margin:0 16px 24px;background:#fff;border-radius:22px;overflow:hidden">
+<sc-for list="{{ home.recent }}" as="r" hint-placeholder-count="5">
+<div onClick="{{ r.open }}" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid rgba(23,22,28,.06);cursor:pointer">
+<div style="width:40px;height:40px;border-radius:13px;background:{{ r.light }};color:{{ r.color }};display:flex;align-items:center;justify-content:center;font:700 11px 'Bricolage Grotesque',sans-serif;flex:none">{{ r.badge }}</div>
+<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.title }}</div><div style="font-size:12px;color:#6b6874">{{ r.sub }}</div></div>
+<div style="font:700 14px 'Bricolage Grotesque',sans-serif;color:{{ r.amtColor }};font-variant-numeric:tabular-nums;white-space:nowrap">{{ r.amount }}</div></div>
+</sc-for></div>
+</div>
+</sc-if>
+
+<!-- SALES / PURCHASE -->
+<sc-if value="{{ isDocTab }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;top:0;left:0;right:0;bottom:84px">
+<div style="position:absolute;inset:0;overflow-y:auto;scrollbar-width:none">
+<div style="background:{{ doc.color }};color:#fff;padding:58px 20px 18px;border-radius:0 0 32px 32px">
+<div style="display:flex;justify-content:space-between;align-items:flex-end"><div style="font:800 34px/1 'Bricolage Grotesque',sans-serif;letter-spacing:-0.03em">{{ doc.title }}</div><div style="font-size:13px;font-weight:500">October 2026</div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px">
+<div style="background:rgba(255,255,255,.15);border-radius:18px;padding:12px 14px"><div style="font-size:12px">{{ doc.stat1Label }}</div><div style="font:700 20px 'Bricolage Grotesque',sans-serif;margin-top:2px;font-variant-numeric:tabular-nums">{{ doc.stat1 }}</div></div>
+<div style="background:rgba(255,255,255,.15);border-radius:18px;padding:12px 14px"><div style="font-size:12px">{{ doc.stat2Label }}</div><div style="font:700 20px 'Bricolage Grotesque',sans-serif;margin-top:2px;font-variant-numeric:tabular-nums">{{ doc.stat2 }}</div></div>
+</div>
+<div style="display:flex;background:rgba(0,0,0,.2);border-radius:14px;padding:4px;margin-top:14px">
+<sc-for list="{{ doc.segs }}" as="s" hint-placeholder-count="3"><button onClick="{{ s.go }}" style="flex:1;border:0;border-radius:11px;padding:9px 0;font-size:13px;font-weight:600;cursor:pointer;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for>
+</div></div>
+<div style="margin:14px 16px 10px;display:flex;align-items:center;gap:8px;background:#fff;border-radius:16px;padding:0 14px;height:46px">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b6874" stroke-width="2" stroke-linecap="round"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4"></path></svg>
+<input value="{{ q }}" onChange="{{ setQ }}" placeholder="{{ doc.searchPh }}" style="flex:1;border:0;outline:none;font-size:15px;background:none;color:#17161c"></div>
+<div style="display:flex;flex-direction:column;gap:8px;padding:0 16px 100px">
+<sc-if value="{{ doc.showDocs }}" hint-placeholder-val="{{ true }}">
+<sc-for list="{{ doc.rows }}" as="r" hint-placeholder-count="5">
+<div onClick="{{ r.open }}" style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:18px;padding:13px 14px;cursor:pointer">
+<div style="width:42px;height:42px;border-radius:14px;background:{{ r.light }};color:{{ r.color }};display:flex;align-items:center;justify-content:center;font:700 12px 'Bricolage Grotesque',sans-serif;flex:none">{{ r.kind }}</div>
+<div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.party }}</div><div style="font-size:12px;color:#6b6874;margin-top:1px">{{ r.sub }}</div></div>
+<div style="text-align:right;flex:none"><div style="font:700 15px 'Bricolage Grotesque',sans-serif;font-variant-numeric:tabular-nums">{{ r.total }}</div><span style="display:inline-block;margin-top:3px;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:99px;background:{{ r.stBg }};color:{{ r.stFg }}">{{ r.status }}</span></div></div>
+</sc-for></sc-if>
+<sc-if value="{{ doc.showParties }}" hint-placeholder-val="{{ false }}">
+<sc-for list="{{ doc.parties }}" as="r" hint-placeholder-count="5">
+<div onClick="{{ r.open }}" style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:18px;padding:13px 14px;cursor:pointer">
+<div style="width:42px;height:42px;border-radius:21px;background:{{ r.light }};color:{{ r.color }};display:flex;align-items:center;justify-content:center;font:700 13px 'Bricolage Grotesque',sans-serif;flex:none">{{ r.ini }}</div>
+<div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.name }}</div><div style="font-size:12px;color:#6b6874;margin-top:1px">{{ r.phone }}</div></div>
+<div style="text-align:right;flex:none"><div style="font:700 15px 'Bricolage Grotesque',sans-serif;color:{{ r.balColor }};font-variant-numeric:tabular-nums">{{ r.bal }}</div><div style="font-size:11px;color:#6b6874;margin-top:2px">{{ r.balLabel }}</div></div></div>
+</sc-for></sc-if>
+<sc-if value="{{ doc.empty }}" hint-placeholder-val="{{ false }}"><div style="text-align:center;color:#6b6874;font-size:14px;padding:40px 0">Nothing here yet</div></sc-if>
+</div></div>
+<button onClick="{{ doc.fab }}" style="position:absolute;right:16px;bottom:16px;height:54px;padding:0 20px 0 16px;border:0;border-radius:27px;background:#17161c;color:#fff;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 10px 24px rgba(23,22,28,.3)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>{{ doc.fabLabel }}</button>
+</div>
+</sc-if>
+
+<!-- INVENTORY -->
+<sc-if value="{{ isInventory }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;top:0;left:0;right:0;bottom:84px">
+<div style="position:absolute;inset:0;overflow-y:auto;scrollbar-width:none">
+<div style="background:#f0a020;color:#17161c;padding:58px 20px 18px;border-radius:0 0 32px 32px">
+<div style="display:flex;justify-content:space-between;align-items:flex-end"><div style="font:800 34px/1 'Bricolage Grotesque',sans-serif;letter-spacing:-0.03em">Inventory</div><div style="font-size:13px;font-weight:600">{{ invt.count }}</div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px">
+<div style="background:rgba(255,255,255,.35);border-radius:18px;padding:12px 14px"><div style="font-size:12px;font-weight:500">Stock value (at cost)</div><div style="font:700 20px 'Bricolage Grotesque',sans-serif;margin-top:2px;font-variant-numeric:tabular-nums">{{ invt.value }}</div></div>
+<div style="background:rgba(255,255,255,.35);border-radius:18px;padding:12px 14px"><div style="font-size:12px;font-weight:500">Running low</div><div style="font:700 20px 'Bricolage Grotesque',sans-serif;margin-top:2px">{{ invt.low }}</div></div>
+</div>
+<div style="display:flex;background:rgba(23,22,28,.12);border-radius:14px;padding:4px;margin-top:14px">
+<sc-for list="{{ invt.segs }}" as="s" hint-placeholder-count="3"><button onClick="{{ s.go }}" style="flex:1;border:0;border-radius:11px;padding:9px 0;font-size:13px;font-weight:600;cursor:pointer;background:{{ s.bg }};color:#17161c">{{ s.label }}</button></sc-for>
+</div></div>
+<div style="margin:14px 16px 10px;display:flex;align-items:center;gap:8px;background:#fff;border-radius:16px;padding:0 14px;height:46px">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b6874" stroke-width="2" stroke-linecap="round"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4"></path></svg>
+<input value="{{ q }}" onChange="{{ setQ }}" placeholder="Search" style="flex:1;border:0;outline:none;font-size:15px;background:none;color:#17161c"></div>
+<sc-if value="{{ invt.showProducts }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:0 16px 10px">
+<sc-for list="{{ invt.chips }}" as="c" hint-placeholder-count="6"><button onClick="{{ c.tap }}" style="flex:none;border:0;border-radius:99px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</button></sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;padding:0 16px 100px">
+<sc-for list="{{ invt.products }}" as="p" hint-placeholder-count="6">
+<div onClick="{{ p.open }}" style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:18px;padding:12px;cursor:pointer">
+<div style="width:52px;height:52px;border-radius:15px;background:{{ p.tint }};display:flex;align-items:center;justify-content:center;font:800 15px 'Bricolage Grotesque',sans-serif;color:#17161c;flex:none">{{ p.ini }}</div>
+<div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</div><div style="font-size:12px;color:#6b6874;margin-top:1px">{{ p.sub }}</div><div style="font:700 14px 'Bricolage Grotesque',sans-serif;margin-top:3px;font-variant-numeric:tabular-nums">{{ p.price }}</div></div>
+<span style="flex:none;font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;background:{{ p.stBg }};color:{{ p.stFg }}">{{ p.stock }}</span></div>
+</sc-for>
+<sc-if value="{{ invt.noProducts }}" hint-placeholder-val="{{ false }}"><div style="text-align:center;color:#6b6874;font-size:14px;padding:40px 0">No products match</div></sc-if>
+</div></sc-if>
+<sc-if value="{{ invt.showGroups }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:8px;padding:0 16px 100px">
+<sc-for list="{{ invt.groups }}" as="g" hint-placeholder-count="5">
+<div onClick="{{ g.open }}" style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:18px;padding:13px 14px;cursor:pointer">
+<div style="width:42px;height:42px;border-radius:14px;background:{{ g.tint }};display:flex;align-items:center;justify-content:center;font:800 14px 'Bricolage Grotesque',sans-serif;flex:none">{{ g.ini }}</div>
+<div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:600">{{ g.name }}</div><div style="font-size:12px;color:#6b6874;margin-top:1px">{{ g.count }}</div></div>
+<div style="text-align:right"><div style="font:700 14px 'Bricolage Grotesque',sans-serif;font-variant-numeric:tabular-nums">{{ g.value }}</div><div style="font-size:11px;color:#6b6874">stock value</div></div></div>
+</sc-for></div></sc-if>
+</div>
+<button onClick="{{ invt.fab }}" style="position:absolute;right:16px;bottom:16px;height:54px;padding:0 20px 0 16px;border:0;border-radius:27px;background:#17161c;color:#fff;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 10px 24px rgba(23,22,28,.3)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>{{ invt.fabLabel }}</button>
+</div>
+</sc-if>
+
+<!-- ACCOUNTS -->
+<sc-if value="{{ isAccounts }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;top:0;left:0;right:0;bottom:84px">
+<div style="position:absolute;inset:0;overflow-y:auto;scrollbar-width:none">
+<div style="background:#6d3fd6;color:#fff;padding:58px 20px 18px;border-radius:0 0 32px 32px">
+<div style="display:flex;justify-content:space-between;align-items:flex-end"><div style="font:800 34px/1 'Bricolage Grotesque',sans-serif;letter-spacing:-0.03em">Accounts</div><div style="font-size:13px;font-weight:500">October 2026</div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px">
+<div style="background:rgba(255,255,255,.15);border-radius:18px;padding:12px 14px"><div style="font-size:12px">Cash in hand</div><div style="font:700 20px 'Bricolage Grotesque',sans-serif;margin-top:2px;font-variant-numeric:tabular-nums">{{ acc.cash }}</div></div>
+<div style="background:rgba(255,255,255,.15);border-radius:18px;padding:12px 14px"><div style="font-size:12px">Meezan Bank</div><div style="font:700 20px 'Bricolage Grotesque',sans-serif;margin-top:2px;font-variant-numeric:tabular-nums">{{ acc.bank }}</div></div>
+</div>
+<div style="display:flex;background:rgba(0,0,0,.2);border-radius:14px;padding:4px;margin-top:14px">
+<sc-for list="{{ acc.segs }}" as="s" hint-placeholder-count="3"><button onClick="{{ s.go }}" style="flex:1;border:0;border-radius:11px;padding:9px 0;font-size:13px;font-weight:600;cursor:pointer;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for>
+</div></div>
+<sc-if value="{{ acc.showVouchers }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:14px 16px 10px">
+<sc-for list="{{ acc.chips }}" as="c" hint-placeholder-count="4"><button onClick="{{ c.tap }}" style="flex:none;border:0;border-radius:99px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</button></sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;padding:0 16px 100px">
+<sc-for list="{{ acc.vouchers }}" as="v" hint-placeholder-count="6">
+<div onClick="{{ v.open }}" style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:18px;padding:13px 14px;cursor:pointer">
+<div style="width:44px;height:42px;border-radius:14px;background:{{ v.light }};color:{{ v.color }};display:flex;align-items:center;justify-content:center;font:700 11px 'Bricolage Grotesque',sans-serif;flex:none">{{ v.kind }}</div>
+<div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ v.title }}</div><div style="font-size:12px;color:#6b6874;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ v.sub }}</div></div>
+<div style="font:700 14.5px 'Bricolage Grotesque',sans-serif;color:{{ v.amtColor }};font-variant-numeric:tabular-nums;white-space:nowrap">{{ v.amount }}</div></div>
+</sc-for></div></sc-if>
+<sc-if value="{{ acc.showCoa }}" hint-placeholder-val="{{ false }}">
+<div style="margin:14px 16px 8px;font-size:13px;color:#6b6874;padding:0 4px">Tap a group to open it, tap an account to see its ledger.</div>
+<div style="margin:0 16px 100px;background:#fff;border-radius:22px;overflow:hidden">
+<sc-for list="{{ acc.coa }}" as="n" hint-placeholder-count="10">
+<div onClick="{{ n.tap }}" style="display:flex;align-items:center;gap:8px;padding:12px 14px 12px {{ n.pad }};background:{{ n.bg }};border-bottom:1px solid rgba(23,22,28,.06);cursor:pointer">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b6874" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;transform:rotate({{ n.rot }});opacity:{{ n.chevOp }}"><path d="M9 6l6 6-6 6"></path></svg>
+<span style="font:500 11px 'JetBrains Mono',monospace;color:#6b6874;width:52px;flex:none">{{ n.code }}</span>
+<span style="flex:1;min-width:0;font-size:14px;font-weight:{{ n.weight }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ n.name }}</span>
+<span style="font:600 13px 'DM Sans',sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap">{{ n.bal }}</span></div>
+</sc-for></div></sc-if>
+<sc-if value="{{ acc.showReports }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:10px;padding:14px 16px 40px">
+<sc-for list="{{ reportTiles }}" as="r" hint-placeholder-count="4">
+<div onClick="{{ r.open }}" style="background:{{ r.color }};color:#fff;border-radius:24px;padding:18px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;min-height:112px">
+<div><div style="font:800 22px 'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em">{{ r.title }}</div><div style="font-size:13px;margin-top:4px;max-width:200px;line-height:1.35">{{ r.desc }}</div></div>
+<div style="text-align:right"><div style="font-size:11px;font-weight:500">{{ r.figureLabel }}</div><div style="font:700 17px 'Bricolage Grotesque',sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap">{{ r.figure }}</div></div></div>
+</sc-for></div></sc-if>
+</div>
+<sc-if value="{{ acc.showFab }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ openVoucherChooser }}" style="position:absolute;right:16px;bottom:16px;height:54px;padding:0 20px 0 16px;border:0;border-radius:27px;background:#17161c;color:#fff;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 10px 24px rgba(23,22,28,.3)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>New voucher</button>
+</sc-if>
+</div>
+</sc-if>
+
+<!-- INVOICE FORM -->
+<sc-if value="{{ isInvoiceForm }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#f4f1ea;z-index:30;display:flex;flex-direction:column" data-screen-label="Invoice form">
+<div style="background:{{ invf.color }};color:#fff;padding:54px 16px 16px;border-radius:0 0 28px 28px;flex:none">
+<div style="display:flex;align-items:center;gap:12px">
+<button onClick="{{ pop }}" style="width:40px;height:40px;border-radius:20px;border:0;background:rgba(255,255,255,.2);color:inherit;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg></button>
+<div style="flex:1"><div style="font-size:12px;font-weight:500">{{ invf.no }} · {{ invf.dateLabel }}</div><div style="font:800 22px/1.15 'Bricolage Grotesque',sans-serif">New {{ invf.title }}</div></div></div>
+<div onClick="{{ openPartyPicker }}" style="margin-top:14px;background:#fff;color:#17161c;border-radius:18px;padding:11px 14px;display:flex;align-items:center;gap:12px;cursor:pointer">
+<div style="width:38px;height:38px;border-radius:19px;background:{{ invf.light }};color:{{ invf.color }};display:flex;align-items:center;justify-content:center;font:700 13px 'Bricolage Grotesque',sans-serif;flex:none">{{ invf.partyIni }}</div>
+<div style="flex:1;min-width:0"><div style="font-size:12px;color:#6b6874">{{ invf.partyLabel }}</div><div style="font-size:15px;font-weight:600">{{ invf.partyName }}</div></div>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b6874" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg></div>
+</div>
+<div style="flex:1;overflow-y:auto;scrollbar-width:none;padding:16px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin:0 4px 10px"><span style="font:700 17px 'Bricolage Grotesque',sans-serif">Items <span style="color:#6b6874;font-weight:600">{{ invf.count }}</span></span>
+<button onClick="{{ openProductPicker }}" style="border:0;background:#17161c;color:#fff;border-radius:99px;padding:8px 14px 8px 10px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Add product</button></div>
+<sc-if value="{{ invf.empty }}" hint-placeholder-val="{{ true }}">
+<div onClick="{{ openProductPicker }}" style="border:2px dashed rgba(23,22,28,.15);border-radius:20px;padding:28px 16px;text-align:center;color:#6b6874;font-size:14px;cursor:pointer">No items yet. Tap to pick products from your catalogue.</div>
+</sc-if>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ invf.items }}" as="it" hint-placeholder-count="0">
+<div style="background:#fff;border-radius:18px;padding:13px 14px">
+<div style="display:flex;align-items:flex-start;gap:8px"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:600">{{ it.name }}</div><div style="font-size:12px;color:{{ it.stockColor }};margin-top:1px">{{ it.stockLabel }}</div></div>
+<button onClick="{{ it.remove }}" style="border:0;background:none;padding:2px;cursor:pointer;color:#a19ea8"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:10px">
+<div style="display:flex;align-items:center;background:#f4f1ea;border-radius:12px;height:38px">
+<button onClick="{{ it.dec }}" style="width:36px;height:38px;border:0;background:none;font-size:20px;font-weight:600;cursor:pointer;color:#17161c">−</button>
+<span style="min-width:26px;text-align:center;font-weight:700;font-size:15px">{{ it.qty }}</span>
+<button onClick="{{ it.inc }}" style="width:36px;height:38px;border:0;background:none;font-size:20px;font-weight:600;cursor:pointer;color:#17161c">+</button></div>
+<span style="color:#6b6874;font-size:13px">×</span>
+<input value="{{ it.rate }}" onChange="{{ it.setRate }}" style="width:84px;height:38px;border:1.5px solid rgba(23,22,28,.1);border-radius:12px;padding:0 10px;font-size:14px;font-weight:600;outline:none;color:#17161c;background:#fff">
+<div style="flex:1;text-align:right;font:700 15px 'Bricolage Grotesque',sans-serif;font-variant-numeric:tabular-nums">{{ it.line }}</div></div>
+</div>
+</sc-for></div>
+<div style="background:#fff;border-radius:20px;padding:6px 16px;margin-top:14px">
+<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;font-size:14px"><span style="color:#6b6874">Subtotal</span><span style="font-weight:600;font-variant-numeric:tabular-nums">{{ invf.sub }}</span></div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:14px;border-top:1px solid rgba(23,22,28,.06)"><span style="color:#6b6874">Discount</span><input value="{{ invf.discount }}" onChange="{{ setDiscount }}" placeholder="0" style="width:110px;height:36px;border:1.5px solid rgba(23,22,28,.1);border-radius:11px;padding:0 10px;font-size:14px;font-weight:600;text-align:right;outline:none;color:#17161c"></div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid rgba(23,22,28,.06)"><span style="font-weight:700;font-size:15px">Total</span><span style="font:800 22px 'Bricolage Grotesque',sans-serif;font-variant-numeric:tabular-nums">{{ invf.total }}</span></div>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;font-size:14px;border-top:1px solid rgba(23,22,28,.06)"><span style="color:#6b6874;flex:1">{{ invf.paidLabel }}</span>
+<button onClick="{{ payFull }}" style="border:0;border-radius:99px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;background:{{ invf.light }};color:{{ invf.color }}">Full</button>
+<input value="{{ invf.paid }}" onChange="{{ setPaid }}" placeholder="0" style="width:110px;height:36px;border:1.5px solid rgba(23,22,28,.1);border-radius:11px;padding:0 10px;font-size:14px;font-weight:600;text-align:right;outline:none;color:#17161c"></div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid rgba(23,22,28,.06);font-size:14px"><span style="font-weight:600">{{ invf.dueLabel }}</span><span style="font-weight:700;color:{{ invf.dueColor }};font-variant-numeric:tabular-nums">{{ invf.due }}</span></div>
+</div>
+<div style="font-size:13px;color:#6b6874;line-height:1.45;margin:12px 6px 0">{{ invf.hint }}</div>
+<sc-for list="{{ errors }}" as="e" hint-placeholder-count="0"><div style="margin-top:8px;background:#fde0d8;color:#9e2a14;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:600">{{ e }}</div></sc-for>
+<div style="height:16px"></div>
+</div>
+<div style="flex:none;padding:12px 16px 30px;background:#fff;border-top:1px solid rgba(23,22,28,.06)">
+<button onClick="{{ saveInvoice }}" style="width:100%;height:54px;border:0;border-radius:18px;background:{{ invf.color }};color:#fff;font-size:16px;font-weight:700;cursor:pointer">Save {{ invf.short }} · {{ invf.total }}</button></div>
+</div>
+</sc-if>
+
+<!-- INVOICE VIEW -->
+<sc-if value="{{ isInvoiceView }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#f4f1ea;z-index:30;display:flex;flex-direction:column" data-screen-label="Invoice view">
+<div style="background:{{ iv.color }};color:#fff;padding:54px 16px 70px;flex:none">
+<div style="display:flex;align-items:center;gap:12px">
+<button onClick="{{ pop }}" style="width:40px;height:40px;border-radius:20px;border:0;background:rgba(255,255,255,.2);color:inherit;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg></button>
+<div style="flex:1"><div style="font-size:12px;font-weight:500">{{ iv.title }}</div><div style="font:800 22px/1.15 'Bricolage Grotesque',sans-serif">{{ iv.no }}</div></div>
+<span style="font-size:12px;font-weight:700;background:#fff;color:{{ iv.color }};padding:5px 11px;border-radius:99px">{{ iv.status }}</span></div></div>
+<div style="flex:1;overflow-y:auto;scrollbar-width:none;padding:0 16px 24px;margin-top:-56px">
+<div style="background:#fff;border-radius:24px;padding:18px;box-shadow:0 8px 24px rgba(23,22,28,.08)">
+<div style="display:flex;justify-content:space-between;gap:12px"><div><div style="font-size:12px;color:#6b6874">{{ iv.partyLabel }}</div><div style="font-size:16px;font-weight:700;margin-top:2px">{{ iv.party }}</div></div><div style="text-align:right"><div style="font-size:12px;color:#6b6874">Date</div><div style="font-size:14px;font-weight:600;margin-top:2px">{{ iv.date }}</div></div></div>
+<div style="border-top:1.5px dashed rgba(23,22,28,.15);margin:16px 0 4px"></div>
+<sc-for list="{{ iv.items }}" as="it" hint-placeholder-count="3">
+<div style="display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid rgba(23,22,28,.06)"><div style="min-width:0"><div style="font-size:14px;font-weight:600">{{ it.name }}</div><div style="font-size:12px;color:#6b6874;margin-top:1px">{{ it.qtyRate }}</div></div><div style="font-weight:700;font-size:14px;font-variant-numeric:tabular-nums;white-space:nowrap">{{ it.line }}</div></div>
+</sc-for>
+<div style="display:flex;justify-content:space-between;padding:10px 0 4px;font-size:14px;color:#6b6874"><span>Subtotal</span><span style="font-variant-numeric:tabular-nums">{{ iv.sub }}</span></div>
+<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:14px;color:#6b6874"><span>Discount</span><span style="font-variant-numeric:tabular-nums">{{ iv.discount }}</span></div>
+<div style="display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-top:1px solid rgba(23,22,28,.08);margin-top:6px"><span style="font-weight:700">Total</span><span style="font:800 26px 'Bricolage Grotesque',sans-serif;font-variant-numeric:tabular-nums">{{ iv.total }}</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">
+<div style="background:#f4f1ea;border-radius:14px;padding:10px 12px"><div style="font-size:11px;color:#6b6874">{{ iv.paidLabel }}</div><div style="font-weight:700;font-size:15px;margin-top:2px;font-variant-numeric:tabular-nums">{{ iv.paid }}</div></div>
+<div style="background:{{ iv.light }};border-radius:14px;padding:10px 12px"><div style="font-size:11px;color:#3d3b44">{{ iv.dueLabel }}</div><div style="font-weight:700;font-size:15px;margin-top:2px;color:{{ iv.color }};font-variant-numeric:tabular-nums">{{ iv.due }}</div></div></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;margin-top:14px">
+<sc-if value="{{ iv.canReturn }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ iv.makeReturn }}" style="height:52px;border:0;border-radius:16px;background:#17161c;color:#fff;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5M4 9h11a5 5 0 0 1 0 10h-3"></path></svg>{{ iv.returnLabel }}</button></sc-if>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<button onClick="{{ iv.openLedger }}" style="height:50px;border:0;border-radius:16px;background:#fff;color:#17161c;font-size:14px;font-weight:700;cursor:pointer">{{ iv.ledgerLabel }}</button>
+<button onClick="{{ iv.share }}" style="height:50px;border:0;border-radius:16px;background:#fff;color:#17161c;font-size:14px;font-weight:700;cursor:pointer">Share PDF</button></div></div>
+</div></div>
+</sc-if>
+
+<!-- LEDGER -->
+<sc-if value="{{ isLedger }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#f4f1ea;z-index:30;display:flex;flex-direction:column" data-screen-label="Ledger">
+<div style="background:{{ lg.color }};color:#fff;padding:54px 16px 20px;border-radius:0 0 28px 28px;flex:none">
+<div style="display:flex;align-items:center;gap:12px">
+<button onClick="{{ pop }}" style="width:40px;height:40px;border-radius:20px;border:0;background:rgba(255,255,255,.2);color:inherit;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg></button>
+<div style="flex:1;min-width:0"><div style="font:500 12px 'JetBrains Mono',monospace">{{ lg.code }}</div><div style="font:800 21px/1.15 'Bricolage Grotesque',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ lg.name }}</div></div></div>
+<div style="margin-top:18px;font-size:13px">{{ lg.balLabel }}</div>
+<div style="font:800 36px/1.1 'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em;font-variant-numeric:tabular-nums">{{ lg.bal }}</div>
+<sc-if value="{{ lg.hasActions }}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+<button onClick="{{ lg.act1 }}" style="height:44px;border:0;border-radius:14px;background:#fff;color:{{ lg.color }};font-size:14px;font-weight:700;cursor:pointer">{{ lg.act1Label }}</button>
+<button onClick="{{ lg.act2 }}" style="height:44px;border:0;border-radius:14px;background:rgba(255,255,255,.2);color:#fff;font-size:14px;font-weight:700;cursor:pointer">{{ lg.act2Label }}</button></div></sc-if>
+</div>
+<div style="flex:1;overflow-y:auto;scrollbar-width:none;padding:16px">
+<div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:#6b6874;margin:0 6px 8px"><span>{{ lg.count }}</span><span>Running balance</span></div>
+<div style="background:#fff;border-radius:22px;overflow:hidden">
+<sc-for list="{{ lg.rows }}" as="r" hint-placeholder-count="6">
+<div onClick="{{ r.open }}" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid rgba(23,22,28,.06);cursor:pointer">
+<div style="width:38px;text-align:center;flex:none"><div style="font:700 16px/1 'Bricolage Grotesque',sans-serif">{{ r.day }}</div><div style="font-size:11px;color:#6b6874">{{ r.mon }}</div></div>
+<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.title }}</div><div style="font-size:12px;color:#6b6874">{{ r.ref }}</div></div>
+<div style="text-align:right;flex:none"><div style="font-weight:700;font-size:14px;color:{{ r.amtColor }};font-variant-numeric:tabular-nums">{{ r.amt }}</div><div style="font-size:12px;color:#6b6874;font-variant-numeric:tabular-nums">{{ r.bal }}</div></div></div>
+</sc-for></div></div>
+</div>
+</sc-if>
+
+<!-- PRODUCT FORM -->
+<sc-if value="{{ isProductForm }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#f4f1ea;z-index:30;display:flex;flex-direction:column" data-screen-label="Product form">
+<div style="background:#f0a020;color:#17161c;padding:54px 16px 18px;border-radius:0 0 28px 28px;flex:none">
+<div style="display:flex;align-items:center;gap:12px">
+<button onClick="{{ pop }}" style="width:40px;height:40px;border-radius:20px;border:0;background:rgba(255,255,255,.35);color:inherit;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg></button>
+<div style="flex:1"><div style="font-size:12px;font-weight:600">Product catalogue</div><div style="font:800 22px/1.15 'Bricolage Grotesque',sans-serif">{{ pf.heading }}</div></div></div>
+<sc-if value="{{ pf.isEdit }}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+<div style="background:rgba(255,255,255,.4);border-radius:16px;padding:10px 12px"><div style="font-size:11px;font-weight:600">In stock now</div><div style="font:800 20px 'Bricolage Grotesque',sans-serif">{{ pf.stockNow }}</div></div>
+<div style="background:rgba(255,255,255,.4);border-radius:16px;padding:10px 12px"><div style="font-size:11px;font-weight:600">Sold this month</div><div style="font:800 20px 'Bricolage Grotesque',sans-serif">{{ pf.sold }}</div></div></div>
+<button onClick="{{ pf.openSL }}" style="width:100%;margin-top:8px;height:42px;border:0;border-radius:14px;background:#17161c;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer">View stock ledger</button></sc-if>
+</div>
+<div style="flex:1;overflow-y:auto;scrollbar-width:none;padding:16px">
+<label style="display:block;margin-bottom:12px"><div style="font-size:12px;font-weight:600;color:#6b6874;margin:0 0 6px 4px">Product name</div><input value="{{ pf.name }}" onChange="{{ pf.setName }}" placeholder="e.g. Anker 30W Charger" style="width:100%;height:50px;border:1.5px solid rgba(23,22,28,.1);border-radius:14px;padding:0 14px;font-size:15px;font-weight:500;background:#fff;outline:none;color:#17161c"></label>
+<label style="display:block;margin-bottom:12px"><div style="font-size:12px;font-weight:600;color:#6b6874;margin:0 0 6px 4px">SKU / code</div><input value="{{ pf.sku }}" onChange="{{ pf.setSku }}" placeholder="e.g. ANK-30W" style="width:100%;height:50px;border:1.5px solid rgba(23,22,28,.1);border-radius:14px;padding:0 14px;font:500 14px 'JetBrains Mono',monospace;background:#fff;outline:none;color:#17161c"></label>
+<div style="font-size:12px;font-weight:600;color:#6b6874;margin:4px 0 8px 4px">Category</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
+<sc-for list="{{ pf.cats }}" as="c" hint-placeholder-count="5"><button onClick="{{ c.tap }}" style="border:0;border-radius:99px;padding:8px 13px;font-size:13px;font-weight:600;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</button></sc-for>
+<button onClick="{{ pf.addCat }}" style="border:1.5px dashed rgba(23,22,28,.25);background:none;border-radius:99px;padding:7px 12px;font-size:13px;font-weight:600;cursor:pointer;color:#6b6874">+ New</button></div>
+<div style="font-size:12px;font-weight:600;color:#6b6874;margin:4px 0 8px 4px">Brand</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
+<sc-for list="{{ pf.brands }}" as="c" hint-placeholder-count="6"><button onClick="{{ c.tap }}" style="border:0;border-radius:99px;padding:8px 13px;font-size:13px;font-weight:600;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</button></sc-for>
+<button onClick="{{ pf.addBrand }}" style="border:1.5px dashed rgba(23,22,28,.25);background:none;border-radius:99px;padding:7px 12px;font-size:13px;font-weight:600;cursor:pointer;color:#6b6874">+ New</button></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<label style="display:block"><div style="font-size:12px;font-weight:600;color:#6b6874;margin:0 0 6px 4px">Cost price (Rs)</div><input value="{{ pf.cost }}" onChange="{{ pf.setCost }}" placeholder="0" style="width:100%;height:50px;border:1.5px solid rgba(23,22,28,.1);border-radius:14px;padding:0 14px;font-size:15px;font-weight:600;background:#fff;outline:none;color:#17161c"></label>
+<label style="display:block"><div style="font-size:12px;font-weight:600;color:#6b6874;margin:0 0 6px 4px">Sale price (Rs)</div><input value="{{ pf.price }}" onChange="{{ pf.setPrice }}" placeholder="0" style="width:100%;height:50px;border:1.5px solid rgba(23,22,28,.1);border-radius:14px;padding:0 14px;font-size:15px;font-weight:600;background:#fff;outline:none;color:#17161c"></label></div>
+<div style="margin:10px 0 14px;background:{{ pf.marginBg }};border-radius:14px;padding:11px 14px;display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:{{ pf.marginFg }}"><span>Profit per piece</span><span>{{ pf.margin }}</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<label style="display:block"><div style="font-size:12px;font-weight:600;color:#6b6874;margin:0 0 6px 4px">{{ pf.openingLabel }}</div><input value="{{ pf.opening }}" onChange="{{ pf.setOpening }}" placeholder="0" style="width:100%;height:50px;border:1.5px solid rgba(23,22,28,.1);border-radius:14px;padding:0 14px;font-size:15px;font-weight:600;background:#fff;outline:none;color:#17161c"></label>
+<label style="display:block"><div style="font-size:12px;font-weight:600;color:#6b6874;margin:0 0 6px 4px">Alert me below</div><input value="{{ pf.reorder }}" onChange="{{ pf.setReorder }}" placeholder="0" style="width:100%;height:50px;border:1.5px solid rgba(23,22,28,.1);border-radius:14px;padding:0 14px;font-size:15px;font-weight:600;background:#fff;outline:none;color:#17161c"></label></div>
+<sc-for list="{{ errors }}" as="e" hint-placeholder-count="0"><div style="margin-top:10px;background:#fde0d8;color:#9e2a14;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:600">{{ e }}</div></sc-for>
+</div>
+<div style="flex:none;padding:12px 16px 30px;background:#fff;border-top:1px solid rgba(23,22,28,.06)">
+<button onClick="{{ saveProduct }}" style="width:100%;height:54px;border:0;border-radius:18px;background:#f0a020;color:#17161c;font-size:16px;font-weight:700;cursor:pointer">{{ pf.saveLabel }}</button></div>
+</div>
+</sc-if>
+
+<!-- VOUCHER FORM -->
+<sc-if value="{{ isVoucherForm }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#f4f1ea;z-index:30;display:flex;flex-direction:column" data-screen-label="Voucher form">
+<div style="background:{{ vf.color }};color:#fff;padding:54px 16px 18px;border-radius:0 0 28px 28px;flex:none">
+<div style="display:flex;align-items:center;gap:12px">
+<button onClick="{{ pop }}" style="width:40px;height:40px;border-radius:20px;border:0;background:rgba(255,255,255,.2);color:inherit;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg></button>
+<div style="flex:1"><div style="font-size:12px;font-weight:500">{{ vf.no }} · {{ vf.dateLabel }}</div><div style="font:800 22px/1.15 'Bricolage Grotesque',sans-serif">{{ vf.title }}</div></div></div>
+<div style="font-size:13px;margin-top:10px;padding-left:52px">{{ vf.desc }}</div>
+</div>
+<div style="flex:1;overflow-y:auto;scrollbar-width:none;padding:16px">
+<sc-if value="{{ vf.isCash }}" hint-placeholder-val="{{ true }}">
+<div style="background:#fff;border-radius:22px;padding:18px;text-align:center">
+<div style="font-size:12px;font-weight:600;color:#6b6874">Amount</div>
+<div style="display:flex;align-items:baseline;justify-content:center;gap:6px;margin-top:4px"><span style="font:700 22px 'Bricolage Grotesque',sans-serif;color:#6b6874">Rs</span><input value="{{ vf.amount }}" onChange="{{ vf.setAmount }}" placeholder="0" style="width:200px;border:0;outline:none;font:800 42px 'Bricolage Grotesque',sans-serif;text-align:left;color:#17161c;background:none"></div></div>
+<div onClick="{{ vf.pickAcct }}" style="margin-top:10px;background:#fff;border-radius:18px;padding:13px 14px;display:flex;align-items:center;gap:12px;cursor:pointer">
+<div style="width:40px;height:40px;border-radius:20px;background:{{ vf.light }};color:{{ vf.color }};display:flex;align-items:center;justify-content:center;font:700 13px 'Bricolage Grotesque',sans-serif;flex:none">{{ vf.acctIni }}</div>
+<div style="flex:1;min-width:0"><div style="font-size:12px;color:#6b6874">{{ vf.acctLabel }}</div><div style="font-size:15px;font-weight:600">{{ vf.acctName }}</div></div>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b6874" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg></div>
+</sc-if>
+<sc-if value="{{ vf.isJV }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ vf.lines }}" as="l" hint-placeholder-count="2">
+<div style="background:#fff;border-radius:18px;padding:12px">
+<div style="display:flex;align-items:center;gap:8px">
+<div onClick="{{ l.pick }}" style="flex:1;min-width:0;background:#f4f1ea;border-radius:12px;padding:9px 12px;cursor:pointer"><div style="font-size:11px;color:#6b6874">Line {{ l.n }} · account</div><div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ l.name }}</div></div>
+<button onClick="{{ l.remove }}" style="border:0;background:none;padding:4px;cursor:pointer;color:#a19ea8"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+<label style="display:block"><div style="font-size:11px;font-weight:600;color:#6b6874;margin:0 0 4px 4px">Debit</div><input value="{{ l.dr }}" onChange="{{ l.setDr }}" placeholder="0" style="width:100%;height:42px;border:1.5px solid rgba(23,22,28,.1);border-radius:12px;padding:0 12px;font-size:14px;font-weight:600;outline:none;color:#17161c"></label>
+<label style="display:block"><div style="font-size:11px;font-weight:600;color:#6b6874;margin:0 0 4px 4px">Credit</div><input value="{{ l.cr }}" onChange="{{ l.setCr }}" placeholder="0" style="width:100%;height:42px;border:1.5px solid rgba(23,22,28,.1);border-radius:12px;padding:0 12px;font-size:14px;font-weight:600;outline:none;color:#17161c"></label></div>
+</div></sc-for></div>
+<button onClick="{{ vf.addLine }}" style="width:100%;margin-top:8px;height:46px;border:1.5px dashed rgba(23,22,28,.2);background:none;border-radius:16px;font-size:14px;font-weight:700;cursor:pointer;color:#17161c">+ Add line</button>
+<div style="margin-top:10px;background:{{ vf.balBg }};color:{{ vf.balFg }};border-radius:16px;padding:12px 14px">
+<div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600"><span>Debit {{ vf.dt }}</span><span>Credit {{ vf.ct }}</span></div>
+<div style="font-size:14px;font-weight:700;margin-top:4px">{{ vf.balMsg }}</div></div>
+</sc-if>
+<label style="display:block;margin-top:10px"><div style="font-size:12px;font-weight:600;color:#6b6874;margin:0 0 6px 4px">Narration</div><input value="{{ vf.narration }}" onChange="{{ vf.setNarr }}" placeholder="What is this for?" style="width:100%;height:50px;border:1.5px solid rgba(23,22,28,.1);border-radius:14px;padding:0 14px;font-size:15px;background:#fff;outline:none;color:#17161c"></label>
+<sc-if value="{{ vf.isCash }}" hint-placeholder-val="{{ true }}">
+<div style="margin-top:14px;border:1.5px solid rgba(23,22,28,.08);border-radius:18px;padding:12px 14px">
+<div style="font-size:12px;font-weight:700;color:#6b6874;margin-bottom:8px">How this is recorded</div>
+<sc-for list="{{ vf.preview }}" as="p" hint-placeholder-count="2"><div style="display:flex;gap:10px;font-size:13px;padding:3px 0"><span style="font:600 11px 'JetBrains Mono',monospace;width:22px;color:{{ p.c }}">{{ p.side }}</span><span style="flex:1">{{ p.name }}</span><span style="font-weight:600;font-variant-numeric:tabular-nums">{{ p.amt }}</span></div></sc-for>
+</div></sc-if>
+<sc-for list="{{ errors }}" as="e" hint-placeholder-count="0"><div style="margin-top:10px;background:#fde0d8;color:#9e2a14;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:600">{{ e }}</div></sc-for>
+</div>
+<div style="flex:none;padding:12px 16px 30px;background:#fff;border-top:1px solid rgba(23,22,28,.06)">
+<button onClick="{{ saveVoucher }}" style="width:100%;height:54px;border:0;border-radius:18px;background:{{ vf.color }};color:#fff;font-size:16px;font-weight:700;cursor:pointer">Save voucher</button></div>
+</div>
+</sc-if>
+
+<!-- VOUCHER VIEW -->
+<sc-if value="{{ isVoucherView }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#f4f1ea;z-index:30;display:flex;flex-direction:column" data-screen-label="Voucher view">
+<div style="background:{{ vv.color }};color:#fff;padding:54px 16px 70px;flex:none">
+<div style="display:flex;align-items:center;gap:12px">
+<button onClick="{{ pop }}" style="width:40px;height:40px;border-radius:20px;border:0;background:rgba(255,255,255,.2);color:inherit;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg></button>
+<div style="flex:1"><div style="font-size:12px;font-weight:500">{{ vv.title }}</div><div style="font:800 22px/1.15 'Bricolage Grotesque',sans-serif">{{ vv.no }}</div></div></div></div>
+<div style="flex:1;overflow-y:auto;scrollbar-width:none;padding:0 16px 24px;margin-top:-56px">
+<div style="background:#fff;border-radius:24px;padding:18px;box-shadow:0 8px 24px rgba(23,22,28,.08)">
+<div style="font-size:12px;color:#6b6874">{{ vv.date }}</div>
+<div style="font-size:17px;font-weight:700;margin-top:4px;line-height:1.3">{{ vv.narration }}</div>
+<div style="font:800 32px 'Bricolage Grotesque',sans-serif;margin-top:10px;font-variant-numeric:tabular-nums">{{ vv.amount }}</div>
+<div style="display:flex;font-size:11px;font-weight:700;color:#6b6874;padding:14px 0 6px;border-bottom:1px solid rgba(23,22,28,.08);margin-top:10px"><span style="flex:1">Account</span><span style="width:84px;text-align:right">Debit</span><span style="width:84px;text-align:right">Credit</span></div>
+<sc-for list="{{ vv.lines }}" as="l" hint-placeholder-count="2">
+<div style="display:flex;align-items:center;font-size:13px;padding:10px 0;border-bottom:1px solid rgba(23,22,28,.06)"><div style="flex:1;min-width:0"><div style="font-weight:600">{{ l.name }}</div><div style="font:500 11px 'JetBrains Mono',monospace;color:#6b6874">{{ l.code }}</div></div><span style="width:84px;text-align:right;font-variant-numeric:tabular-nums">{{ l.dr }}</span><span style="width:84px;text-align:right;font-variant-numeric:tabular-nums">{{ l.cr }}</span></div>
+</sc-for></div></div></div>
+</sc-if>
+
+<!-- REPORT -->
+<sc-if value="{{ isReport }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#f4f1ea;z-index:30;display:flex;flex-direction:column" data-screen-label="Report">
+<div style="background:{{ rp.color }};color:#fff;padding:54px 16px 20px;border-radius:0 0 28px 28px;flex:none">
+<div style="display:flex;align-items:center;gap:12px">
+<button onClick="{{ pop }}" style="width:40px;height:40px;border-radius:20px;border:0;background:rgba(255,255,255,.2);color:inherit;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg></button>
+<div style="flex:1"><div style="font-size:12px;font-weight:500">{{ rp.period }}</div><div style="font:800 22px/1.15 'Bricolage Grotesque',sans-serif">{{ rp.title }}</div></div></div>
+<div style="margin-top:16px;font-size:13px">{{ rp.heroLabel }}</div>
+<div style="font:800 36px/1.1 'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em;font-variant-numeric:tabular-nums">{{ rp.hero }}</div>
+<div style="display:inline-flex;margin-top:10px;font-size:12px;font-weight:700;background:rgba(255,255,255,.2);padding:5px 11px;border-radius:99px">{{ rp.chip }}</div>
+</div>
+<div style="flex:1;overflow-y:auto;scrollbar-width:none;padding:16px">
+<sc-if value="{{ rp.isCashbook }}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+<div style="background:#fff;border-radius:16px;padding:10px 12px"><div style="font-size:11px;color:#6b6874">Opening</div><div style="font-weight:700;font-size:13.5px;font-variant-numeric:tabular-nums">{{ cb.opening }}</div></div>
+<div style="background:#d7f2e3;border-radius:16px;padding:10px 12px"><div style="font-size:11px;color:#0b5c35">Money in</div><div style="font-weight:700;font-size:13.5px;color:#0b5c35;font-variant-numeric:tabular-nums">{{ cb.inT }}</div></div>
+<div style="background:#fde0d8;border-radius:16px;padding:10px 12px"><div style="font-size:11px;color:#9e2a14">Money out</div><div style="font-weight:700;font-size:13.5px;color:#9e2a14;font-variant-numeric:tabular-nums">{{ cb.outT }}</div></div></div>
+<div style="background:#fff;border-radius:22px;overflow:hidden">
+<sc-for list="{{ cb.rows }}" as="r" hint-placeholder-count="8">
+<div onClick="{{ r.open }}" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid rgba(23,22,28,.06);cursor:pointer">
+<div style="width:34px;text-align:center;flex:none"><div style="font:700 15px/1 'Bricolage Grotesque',sans-serif">{{ r.day }}</div><div style="font-size:11px;color:#6b6874">{{ r.mon }}</div></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.title }}</div><div style="font-size:11.5px;color:#6b6874;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.ref }}</div></div>
+<div style="text-align:right;flex:none"><div style="font-weight:700;font-size:13.5px;color:{{ r.amtColor }};font-variant-numeric:tabular-nums">{{ r.amt }}</div><div style="font-size:11.5px;color:#6b6874;font-variant-numeric:tabular-nums">{{ r.bal }}</div></div></div>
+</sc-for></div></sc-if>
+<sc-if value="{{ rp.isStatement }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ st.blocks }}" as="b" hint-placeholder-count="3">
+<div style="background:{{ b.bg }};color:{{ b.fg }};border-radius:20px;padding:6px 16px">
+<sc-for list="{{ b.rows }}" as="r" hint-placeholder-count="2">
+<div onClick="{{ r.open }}" style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 0;border-top:{{ r.border }};font-size:{{ r.size }};font-weight:{{ r.weight }};cursor:pointer"><span style="padding-left:{{ r.indent }}">{{ r.label }}</span><span style="font-variant-numeric:tabular-nums;white-space:nowrap">{{ r.amt }}</span></div>
+</sc-for></div>
+</sc-for></div></sc-if>
+<sc-if value="{{ rp.isStock }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border-radius:20px;padding:12px">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<label style="display:block"><div style="font-size:11px;font-weight:700;color:#6b6874;margin:0 0 4px 4px">From</div><input type="date" value="{{ rp.sk.from }}" onChange="{{ rp.sk.setFrom }}" style="width:100%;height:44px;border:1.5px solid rgba(23,22,28,.1);border-radius:12px;padding:0 10px;font-size:14px;font-weight:600;outline:none;color:#17161c;background:#f4f1ea"></label>
+<label style="display:block"><div style="font-size:11px;font-weight:700;color:#6b6874;margin:0 0 4px 4px">To</div><input type="date" value="{{ rp.sk.to }}" onChange="{{ rp.sk.setTo }}" style="width:100%;height:44px;border:1.5px solid rgba(23,22,28,.1);border-radius:12px;padding:0 10px;font-size:14px;font-weight:600;outline:none;color:#17161c;background:#f4f1ea"></label></div>
+<div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-top:10px">
+<sc-for list="{{ rp.sk.presets }}" as="c" hint-placeholder-count="3"><button onClick="{{ c.tap }}" style="flex:none;border:1.5px solid rgba(23,22,28,.1);border-radius:99px;padding:6px 12px;font-size:12.5px;font-weight:600;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</button></sc-for></div>
+<div style="display:flex;align-items:center;gap:8px;background:#f4f1ea;border-radius:12px;padding:0 12px;height:44px;margin-top:10px">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6b6874" stroke-width="2" stroke-linecap="round"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4"></path></svg>
+<input value="{{ rp.sk.q }}" onChange="{{ rp.sk.setQ }}" placeholder="Product, SKU or brand" style="flex:1;border:0;outline:none;font-size:14.5px;background:none;color:#17161c"></div></div>
+<div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:10px -16px 0;padding:0 16px">
+<sc-for list="{{ rp.sk.chips }}" as="c" hint-placeholder-count="6"><button onClick="{{ c.tap }}" style="flex:none;border:0;border-radius:99px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</button></sc-for></div>
+<div style="background:#fff;border-radius:20px;padding:4px 12px;margin-top:10px">
+<div style="display:flex;gap:4px;font-size:10.5px;font-weight:700;color:#6b6874;padding:10px 0 8px;border-bottom:1px solid rgba(23,22,28,.08)"><span style="flex:1">Product</span><span style="width:38px;text-align:right">Open</span><span style="width:38px;text-align:right">In</span><span style="width:38px;text-align:right">Out</span><span style="width:46px;text-align:right">Close</span></div>
+<sc-for list="{{ rp.sk.rows }}" as="r" hint-placeholder-count="8">
+<div onClick="{{ r.tap }}" style="display:flex;gap:4px;align-items:center;padding:9px 0;border-bottom:1px solid rgba(23,22,28,.05);cursor:pointer;font-size:12.5px;font-variant-numeric:tabular-nums">
+<div style="flex:1;min-width:0"><div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.name }}</div><div style="font-size:10.5px;color:#6b6874;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.value }} · {{ r.sub }}</div></div>
+<span style="width:38px;text-align:right;color:#6b6874">{{ r.open }}</span><span style="width:38px;text-align:right;color:#0b8049;font-weight:600">{{ r.qin }}</span><span style="width:38px;text-align:right;color:#b3301a;font-weight:600">{{ r.qout }}</span>
+<span style="width:46px;text-align:right"><span style="display:inline-block;min-width:34px;text-align:center;font-weight:800;padding:2px 6px;border-radius:8px;background:{{ r.closeBg }};color:{{ r.closeFg }}">{{ r.close }}</span></span></div>
+</sc-for>
+<div style="display:flex;gap:4px;align-items:center;padding:11px 0;font-size:12.5px;font-weight:800;font-variant-numeric:tabular-nums"><span style="flex:1">Total pcs</span><span style="width:38px;text-align:right">{{ rp.sk.tOpen }}</span><span style="width:38px;text-align:right;color:#0b8049">{{ rp.sk.tIn }}</span><span style="width:38px;text-align:right;color:#b3301a">{{ rp.sk.tOut }}</span><span style="width:46px;text-align:right">{{ rp.sk.tClose }}</span></div></div>
+<sc-if value="{{ rp.sk.empty }}" hint-placeholder-val="{{ false }}"><div style="text-align:center;color:#6b6874;font-size:14px;padding:32px 0">No products match</div></sc-if>
+<div style="font-size:12px;color:#6b6874;margin:10px 6px 0">Tap a product to open its stock ledger.</div>
+</sc-if>
+<sc-if value="{{ rp.isSL }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;background:#fff;border-radius:14px;padding:4px;margin-bottom:10px">
+<sc-for list="{{ rp.slModes }}" as="s" hint-placeholder-count="2"><button onClick="{{ s.go }}" style="flex:1;border:0;border-radius:11px;padding:9px 0;font-size:13px;font-weight:600;cursor:pointer;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for></div>
+<sc-if value="{{ rp.slOne }}" hint-placeholder-val="{{ true }}">
+<div onClick="{{ rp.sl.pick }}" style="background:#fff;border-radius:20px;padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer">
+<div style="width:46px;height:46px;border-radius:14px;background:{{ rp.sl.tint }};display:flex;align-items:center;justify-content:center;font:800 14px 'Bricolage Grotesque',sans-serif;flex:none">{{ rp.sl.ini }}</div>
+<div style="flex:1;min-width:0"><div style="font-size:11px;color:#6b6874">Product</div><div style="font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ rp.sl.name }}</div><div style="font-size:11.5px;color:#6b6874">{{ rp.sl.sub }}</div></div>
+<span style="font-size:12px;font-weight:700;color:#9a6200;background:#fdecc8;padding:6px 10px;border-radius:99px;flex:none">Change</span></div>
+</sc-if>
+<div style="background:#fff;border-radius:20px;padding:12px;margin-top:10px">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<label style="display:block"><div style="font-size:11px;font-weight:700;color:#6b6874;margin:0 0 4px 4px">From</div><input type="date" value="{{ rp.sl.from }}" onChange="{{ rp.sl.setFrom }}" style="width:100%;height:44px;border:1.5px solid rgba(23,22,28,.1);border-radius:12px;padding:0 10px;font-size:14px;font-weight:600;outline:none;color:#17161c;background:#f4f1ea"></label>
+<label style="display:block"><div style="font-size:11px;font-weight:700;color:#6b6874;margin:0 0 4px 4px">To</div><input type="date" value="{{ rp.sl.to }}" onChange="{{ rp.sl.setTo }}" style="width:100%;height:44px;border:1.5px solid rgba(23,22,28,.1);border-radius:12px;padding:0 10px;font-size:14px;font-weight:600;outline:none;color:#17161c;background:#f4f1ea"></label></div>
+<div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-top:10px">
+<sc-for list="{{ rp.sl.presets }}" as="c" hint-placeholder-count="3"><button onClick="{{ c.tap }}" style="flex:none;border:1.5px solid rgba(23,22,28,.1);border-radius:99px;padding:6px 12px;font-size:12.5px;font-weight:600;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</button></sc-for></div>
+<div style="display:flex;align-items:center;gap:8px;background:#f4f1ea;border-radius:12px;padding:0 12px;height:44px;margin-top:10px">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6b6874" stroke-width="2" stroke-linecap="round"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4"></path></svg>
+<input value="{{ rp.sl.q }}" onChange="{{ rp.sl.setQ }}" placeholder="Product, party, invoice no. or type" style="flex:1;border:0;outline:none;font-size:14.5px;background:none;color:#17161c"></div></div>
+<sc-if value="{{ rp.slAll }}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px">
+<div style="background:#fff;border-radius:14px;padding:9px 10px"><div style="font-size:10.5px;color:#6b6874">Opening</div><div style="font-weight:800;font-size:15px">{{ rp.sa.gO }}</div></div>
+<div style="background:#d7f2e3;border-radius:14px;padding:9px 10px"><div style="font-size:10.5px;color:#0b5c35">In</div><div style="font-weight:800;font-size:15px;color:#0b5c35">{{ rp.sa.gI }}</div></div>
+<div style="background:#fde0d8;border-radius:14px;padding:9px 10px"><div style="font-size:10.5px;color:#9e2a14">Out</div><div style="font-weight:800;font-size:15px;color:#9e2a14">{{ rp.sa.gX }}</div></div>
+<div style="background:#fdecc8;border-radius:14px;padding:9px 10px"><div style="font-size:10.5px;color:#7a4d00">Closing</div><div style="font-weight:800;font-size:15px;color:#7a4d00">{{ rp.sa.gC }}</div></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin:12px 4px 8px"><span style="font-size:12px;font-weight:600;color:#6b6874">{{ rp.sa.count }}</span><button onClick="{{ rp.sa.expandAll }}" style="border:0;background:none;font-size:13px;font-weight:700;color:#9a6200;cursor:pointer;padding:4px 0">{{ rp.sa.expandLabel }}</button></div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ rp.sa.cards }}" as="a" hint-placeholder-count="6">
+<div style="background:#fff;border-radius:20px;overflow:hidden">
+<div onClick="{{ a.toggle }}" style="padding:12px 14px;cursor:pointer">
+<div style="display:flex;align-items:center;gap:10px">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b6874" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;transform:rotate({{ a.rot }})"><path d="M9 6l6 6-6 6"></path></svg>
+<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ a.name }}</div><div style="font-size:11px;color:#6b6874;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ a.sub }}</div></div>
+<span style="flex:none;min-width:40px;text-align:center;font-weight:800;font-size:14px;padding:4px 8px;border-radius:10px;background:{{ a.closeBg }};color:{{ a.closeFg }}">{{ a.close }}</span></div>
+<div style="display:flex;gap:14px;margin:8px 0 0 24px;font-size:12px;font-variant-numeric:tabular-nums"><span style="color:#6b6874">Open <b style="color:#17161c">{{ a.open }}</b></span><span style="color:#6b6874">In <b style="color:#0b8049">{{ a.qin }}</b></span><span style="color:#6b6874">Out <b style="color:#b3301a">{{ a.qout }}</b></span></div></div>
+<sc-if value="{{ a.isOpen }}" hint-placeholder-val="{{ false }}">
+<div style="border-top:1px solid rgba(23,22,28,.08);padding:0 14px">
+<div style="display:flex;gap:6px;font-size:10.5px;font-weight:700;color:#6b6874;padding:9px 0 6px"><span style="flex:1">Date · Particulars</span><span style="width:32px;text-align:right">In</span><span style="width:32px;text-align:right">Out</span><span style="width:36px;text-align:right">Bal</span></div>
+<div style="display:flex;gap:6px;padding:7px 0;border-top:1px solid rgba(23,22,28,.05);font-size:11.5px;background:#faf8f4;margin:0 -14px;padding-left:14px;padding-right:14px"><span style="flex:1;color:#6b6874;font-weight:600">Opening stock b/f</span><span style="width:36px;text-align:right;font-weight:800">{{ a.open }}</span></div>
+<sc-for list="{{ a.rows }}" as="r" hint-placeholder-count="2">
+<div onClick="{{ r.open }}" style="display:flex;gap:6px;align-items:center;padding:8px 0;border-top:1px solid rgba(23,22,28,.05);font-size:11.5px;cursor:pointer;font-variant-numeric:tabular-nums">
+<div style="flex:1;min-width:0"><div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.title }}</div><div style="color:#6b6874;font-size:10.5px">{{ r.date }} · {{ r.ref }}</div></div>
+<span style="width:32px;text-align:right;font-weight:700;color:#0b8049">{{ r.inQ }}</span><span style="width:32px;text-align:right;font-weight:700;color:#b3301a">{{ r.outQ }}</span><span style="width:36px;text-align:right;font-weight:800">{{ r.bal }}</span></div>
+</sc-for>
+<sc-if value="{{ a.none }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:#6b6874;padding:8px 0;border-top:1px solid rgba(23,22,28,.05)">No movements in this range</div></sc-if>
+<button onClick="{{ a.single }}" style="width:100%;margin:6px 0 12px;height:38px;border:0;border-radius:12px;background:#fdecc8;color:#7a4d00;font-size:13px;font-weight:700;cursor:pointer">Open product ledger</button>
+</div></sc-if></div>
+</sc-for></div>
+<sc-if value="{{ rp.sa.empty }}" hint-placeholder-val="{{ false }}"><div style="text-align:center;color:#6b6874;font-size:14px;padding:24px 0">No products match</div></sc-if>
+</sc-if>
+<sc-if value="{{ rp.slOne }}" hint-placeholder-val="{{ true }}">
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px">
+<div style="background:#fff;border-radius:14px;padding:9px 10px"><div style="font-size:10.5px;color:#6b6874">Opening</div><div style="font-weight:800;font-size:15px">{{ rp.sl.open }}</div></div>
+<div style="background:#d7f2e3;border-radius:14px;padding:9px 10px"><div style="font-size:10.5px;color:#0b5c35">In</div><div style="font-weight:800;font-size:15px;color:#0b5c35">{{ rp.sl.qin }}</div></div>
+<div style="background:#fde0d8;border-radius:14px;padding:9px 10px"><div style="font-size:10.5px;color:#9e2a14">Out</div><div style="font-weight:800;font-size:15px;color:#9e2a14">{{ rp.sl.qout }}</div></div>
+<div style="background:#fdecc8;border-radius:14px;padding:9px 10px"><div style="font-size:10.5px;color:#7a4d00">Closing</div><div style="font-weight:800;font-size:15px;color:#7a4d00">{{ rp.sl.close }}</div></div></div>
+<div style="background:#fff;border-radius:20px;overflow:hidden;margin-top:10px">
+<div style="display:flex;gap:6px;font-size:10.5px;font-weight:700;color:#6b6874;padding:10px 14px 8px;border-bottom:1px solid rgba(23,22,28,.08)"><span style="flex:1">Date · Particulars</span><span style="width:34px;text-align:right">In</span><span style="width:34px;text-align:right">Out</span><span style="width:40px;text-align:right">Bal</span></div>
+<sc-for list="{{ rp.sl.rows }}" as="r" hint-placeholder-count="5">
+<div onClick="{{ r.open }}" style="display:flex;gap:6px;align-items:center;padding:10px 14px;border-bottom:1px solid rgba(23,22,28,.05);cursor:pointer;font-variant-numeric:tabular-nums">
+<div style="width:30px;text-align:center;flex:none"><div style="font:700 15px/1 'Bricolage Grotesque',sans-serif">{{ r.day }}</div><div style="font-size:10.5px;color:#6b6874">{{ r.mon }}</div></div>
+<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.title }}</div><div style="font-size:11px;color:#6b6874">{{ r.ref }}</div></div>
+<span style="width:34px;text-align:right;font-size:13px;font-weight:700;color:#0b8049">{{ r.inQ }}</span><span style="width:34px;text-align:right;font-size:13px;font-weight:700;color:#b3301a">{{ r.outQ }}</span><span style="width:40px;text-align:right;font-size:13px;font-weight:800">{{ r.bal }}</span></div>
+</sc-for>
+<div style="display:flex;gap:6px;align-items:center;padding:10px 14px;background:#faf8f4;font-size:12.5px"><span style="flex:1;font-weight:600;color:#6b6874">Opening stock b/f</span><span style="font-weight:800">{{ rp.sl.open }}</span></div></div>
+<sc-if value="{{ rp.sl.empty }}" hint-placeholder-val="{{ false }}"><div style="text-align:center;color:#6b6874;font-size:14px;padding:24px 0">No movements in this range</div></sc-if>
+</sc-if>
+</sc-if>
+<sc-if value="{{ rp.isSP }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border-radius:20px;padding:12px">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<label style="display:block"><div style="font-size:11px;font-weight:700;color:#6b6874;margin:0 0 4px 4px">From</div><input type="date" value="{{ rp.sp.from }}" onChange="{{ rp.sp.setFrom }}" min="2026-01-01" max="2026-12-31" style="width:100%;height:44px;border:1.5px solid rgba(23,22,28,.1);border-radius:12px;padding:0 10px;font-size:14px;font-weight:600;outline:none;color:#17161c;background:#f4f1ea"></label>
+<label style="display:block"><div style="font-size:11px;font-weight:700;color:#6b6874;margin:0 0 4px 4px">To</div><input type="date" value="{{ rp.sp.to }}" onChange="{{ rp.sp.setTo }}" min="2026-01-01" max="2026-12-31" style="width:100%;height:44px;border:1.5px solid rgba(23,22,28,.1);border-radius:12px;padding:0 10px;font-size:14px;font-weight:600;outline:none;color:#17161c;background:#f4f1ea"></label></div>
+<div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-top:10px">
+<sc-for list="{{ rp.sp.presets }}" as="c" hint-placeholder-count="4"><button onClick="{{ c.tap }}" style="flex:none;border:1.5px solid rgba(23,22,28,.1);border-radius:99px;padding:6px 12px;font-size:12.5px;font-weight:600;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</button></sc-for></div>
+<div style="display:flex;align-items:center;gap:8px;background:#f4f1ea;border-radius:12px;padding:0 12px;height:44px;margin-top:10px">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6b6874" stroke-width="2" stroke-linecap="round"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4"></path></svg>
+<input value="{{ rp.sp.q }}" onChange="{{ rp.sp.setQ }}" placeholder="{{ rp.sp.ph }}" style="flex:1;border:0;outline:none;font-size:14.5px;background:none;color:#17161c"></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px">
+<div style="background:#fff;border-radius:16px;padding:10px 12px"><div style="font-size:11px;color:#6b6874">{{ rp.sp.grossLabel }}</div><div style="font-weight:700;font-size:13.5px;font-variant-numeric:tabular-nums">{{ rp.sp.gross }}</div></div>
+<div style="background:#fff;border-radius:16px;padding:10px 12px"><div style="font-size:11px;color:#6b6874">Returns</div><div style="font-weight:700;font-size:13.5px;color:#9e2a14;font-variant-numeric:tabular-nums">{{ rp.sp.rets }}</div></div>
+<div style="background:{{ rp.sp.light }};border-radius:16px;padding:10px 12px"><div style="font-size:11px;color:#3d3b44">Net</div><div style="font-weight:800;font-size:13.5px;color:{{ rp.sp.color }};font-variant-numeric:tabular-nums">{{ rp.sp.net }}</div></div>
+<div style="background:#fff;border-radius:16px;padding:10px 12px"><div style="font-size:11px;color:#6b6874">{{ rp.sp.settledLabel }}</div><div style="font-weight:700;font-size:13.5px;font-variant-numeric:tabular-nums">{{ rp.sp.settled }}</div></div>
+<div style="background:#fff;border-radius:16px;padding:10px 12px"><div style="font-size:11px;color:#6b6874">{{ rp.sp.dueLabel }}</div><div style="font-weight:700;font-size:13.5px;font-variant-numeric:tabular-nums">{{ rp.sp.due }}</div></div>
+<div style="background:#fff;border-radius:16px;padding:10px 12px"><div style="font-size:11px;color:#6b6874">{{ rp.sp.extraLabel }}</div><div style="font-weight:700;font-size:13.5px;font-variant-numeric:tabular-nums">{{ rp.sp.extra }}</div></div></div>
+<div style="display:flex;background:#fff;border-radius:14px;padding:4px;margin-top:12px">
+<sc-for list="{{ rp.sp.groups }}" as="s" hint-placeholder-count="3"><button onClick="{{ s.go }}" style="flex:1;border:0;border-radius:11px;padding:9px 0;font-size:13px;font-weight:600;cursor:pointer;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for></div>
+<div style="font-size:12px;font-weight:600;color:#6b6874;margin:12px 6px 8px">{{ rp.sp.count }}</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ rp.sp.rows }}" as="r" hint-placeholder-count="6">
+<div onClick="{{ r.open }}" style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:18px;padding:12px 14px;cursor:pointer">
+<div style="width:40px;height:40px;border-radius:13px;background:{{ r.bBg }};color:{{ r.bFg }};display:flex;align-items:center;justify-content:center;font:700 12px 'Bricolage Grotesque',sans-serif;flex:none">{{ r.badge }}</div>
+<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.title }}</div><div style="font-size:12px;color:#6b6874">{{ r.sub }}</div></div>
+<div style="text-align:right;flex:none"><div style="font:700 14.5px 'Bricolage Grotesque',sans-serif;color:{{ r.amtColor }};font-variant-numeric:tabular-nums">{{ r.amt }}</div><div style="font-size:11.5px;color:#6b6874">{{ r.sub2 }}</div></div></div>
+</sc-for></div>
+<sc-if value="{{ rp.sp.empty }}" hint-placeholder-val="{{ false }}"><div style="text-align:center;color:#6b6874;font-size:14px;padding:32px 0">Nothing in this date range</div></sc-if>
+</sc-if>
+<sc-if value="{{ rp.isGL }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:8px;background:#fff;border-radius:16px;padding:0 14px;height:46px;margin-bottom:10px">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b6874" stroke-width="2" stroke-linecap="round"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4"></path></svg>
+<input value="{{ rp.gl.q }}" onChange="{{ rp.gl.setQ }}" placeholder="Find an account" style="flex:1;border:0;outline:none;font-size:15px;background:none;color:#17161c"></div>
+<div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -16px 10px;padding:0 16px">
+<sc-for list="{{ rp.gl.chips }}" as="c" hint-placeholder-count="6"><button onClick="{{ c.tap }}" style="flex:none;border:0;border-radius:99px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</button></sc-for>
+</div>
+<div style="display:flex;justify-content:flex-end;margin:0 4px 8px"><button onClick="{{ rp.gl.expandAll }}" style="border:0;background:none;font-size:13px;font-weight:700;color:#6d3fd6;cursor:pointer;padding:4px 0">{{ rp.gl.expandLabel }}</button></div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ rp.gl.accounts }}" as="a" hint-placeholder-count="6">
+<div style="background:#fff;border-radius:20px;overflow:hidden">
+<div onClick="{{ a.toggle }}" style="display:flex;align-items:center;gap:10px;padding:13px 14px;cursor:pointer">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b6874" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;transform:rotate({{ a.rot }})"><path d="M9 6l6 6-6 6"></path></svg>
+<div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ a.name }}</div><div style="font-size:11.5px;color:#6b6874;margin-top:1px"><span style="font-family:'JetBrains Mono',monospace">{{ a.code }}</span> · {{ a.typeLabel }} · {{ a.count }}</div></div>
+<div style="text-align:right;flex:none"><div style="font:700 14.5px 'Bricolage Grotesque',sans-serif;font-variant-numeric:tabular-nums">{{ a.closing }}</div><div style="font:600 10.5px 'JetBrains Mono',monospace;color:#6b6874">{{ a.side }}</div></div></div>
+<sc-if value="{{ a.isOpen }}" hint-placeholder-val="{{ false }}">
+<div style="border-top:1px solid rgba(23,22,28,.08);padding:0 14px">
+<div style="display:flex;gap:6px;font-size:10.5px;font-weight:700;color:#6b6874;padding:9px 0 6px"><span style="flex:1">Date · Particulars</span><span style="width:62px;text-align:right">Debit</span><span style="width:62px;text-align:right">Credit</span><span style="width:70px;text-align:right">Balance</span></div>
+<sc-for list="{{ a.rows }}" as="r" hint-placeholder-count="3">
+<div onClick="{{ r.open }}" style="display:flex;gap:6px;align-items:center;padding:8px 0;border-top:1px solid rgba(23,22,28,.05);font-size:11.5px;cursor:pointer;font-variant-numeric:tabular-nums">
+<div style="flex:1;min-width:0"><div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.memo }}</div><div style="color:#6b6874;font-size:10.5px">{{ r.date }} · {{ r.ref }}</div></div>
+<span style="width:62px;text-align:right">{{ r.dr }}</span><span style="width:62px;text-align:right">{{ r.cr }}</span><span style="width:70px;text-align:right;font-weight:700">{{ r.bal }}</span></div>
+</sc-for>
+<div style="display:flex;gap:6px;align-items:center;padding:9px 0;border-top:1.5px solid rgba(23,22,28,.12);font-size:11.5px;font-weight:800;font-variant-numeric:tabular-nums"><span style="flex:1">Totals</span><span style="width:62px;text-align:right">{{ a.dr }}</span><span style="width:62px;text-align:right">{{ a.cr }}</span><span style="width:70px;text-align:right">{{ a.closing }}</span></div>
+<button onClick="{{ a.openLedger }}" style="width:100%;margin:2px 0 12px;height:40px;border:0;border-radius:12px;background:#ebe3fc;color:#6d3fd6;font-size:13px;font-weight:700;cursor:pointer">Open account ledger</button>
+</div></sc-if>
+</div>
+</sc-for></div>
+<sc-if value="{{ rp.gl.empty }}" hint-placeholder-val="{{ false }}"><div style="text-align:center;color:#6b6874;font-size:14px;padding:40px 0">No accounts match</div></sc-if>
+</sc-if>
+<sc-if value="{{ rp.isTB }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border-radius:22px;padding:4px 14px">
+<div style="display:flex;font-size:11px;font-weight:700;color:#6b6874;padding:12px 0 8px;border-bottom:1px solid rgba(23,22,28,.08)"><span style="flex:1">Account</span><span style="width:86px;text-align:right">Debit</span><span style="width:86px;text-align:right">Credit</span></div>
+<sc-for list="{{ tb.rows }}" as="r" hint-placeholder-count="10">
+<div onClick="{{ r.open }}" style="display:flex;align-items:center;font-size:12.5px;padding:9px 0;border-bottom:1px solid rgba(23,22,28,.06);cursor:pointer"><div style="flex:1;min-width:0"><div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.name }}</div><div style="font:500 10.5px 'JetBrains Mono',monospace;color:#6b6874">{{ r.code }}</div></div><span style="width:86px;text-align:right;font-variant-numeric:tabular-nums">{{ r.dr }}</span><span style="width:86px;text-align:right;font-variant-numeric:tabular-nums">{{ r.cr }}</span></div>
+</sc-for>
+<div style="display:flex;font-size:13px;font-weight:800;padding:12px 0"><span style="flex:1">Total</span><span style="width:86px;text-align:right;font-variant-numeric:tabular-nums">{{ tb.dr }}</span><span style="width:86px;text-align:right;font-variant-numeric:tabular-nums">{{ tb.cr }}</span></div>
+</div></sc-if>
+</div></div>
+</sc-if>
+
+<!-- STATUS BAR -->
+<div style="position:absolute;top:0;left:0;right:0;height:46px;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:4px 30px 0 34px;font-size:15px;font-weight:700;color:{{ statusColor }};pointer-events:none">
+<span>9:41</span>
+<div style="display:flex;gap:6px;align-items:center">
+<svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"></rect><rect x="5" y="5" width="3" height="7" rx="1"></rect><rect x="10" y="2.5" width="3" height="9.5" rx="1"></rect><rect x="15" y="0" width="3" height="12" rx="1"></rect></svg>
+<svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.5" width="22" height="11" rx="3.5" stroke="currentColor" opacity=".5"></rect><rect x="2" y="2" width="17" height="8" rx="2" fill="currentColor"></rect><rect x="24" y="4" width="2" height="4" rx="1" fill="currentColor" opacity=".5"></rect></svg></div></div>
+
+<!-- TAB BAR -->
+<sc-if value="{{ showTabs }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;left:0;right:0;bottom:0;height:84px;background:#fff;border-top:1px solid rgba(23,22,28,.07);display:flex;padding:8px 6px 22px;z-index:20">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+<button onClick="{{ t.go }}" style="flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;color:{{ t.fg }};font-size:11px;font-weight:700;padding:0">
+<div style="width:54px;height:30px;border-radius:15px;display:flex;align-items:center;justify-content:center;background:{{ t.bg }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ t.icon }}"></path></svg></div>
+<span>{{ t.label }}</span></button>
+</sc-for></div>
+</sc-if>
+
+<!-- SHEET -->
+<sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeSheet }}" style="position:absolute;inset:0;background:rgba(23,22,28,.45);z-index:60"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:61;background:#fff;border-radius:28px 28px 0 0;max-height:80%;display:flex;flex-direction:column;padding:10px 0 30px">
+<div style="width:40px;height:5px;border-radius:3px;background:rgba(23,22,28,.15);margin:0 auto 10px;flex:none"></div>
+<div style="display:flex;align-items:center;justify-content:space-between;padding:0 20px 10px;flex:none"><span style="font:800 20px 'Bricolage Grotesque',sans-serif">{{ sh.title }}</span>
+<button onClick="{{ closeSheet }}" style="border:0;background:#f4f1ea;border-radius:99px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;color:#17161c">{{ sh.closeLabel }}</button></div>
+<sc-if value="{{ sh.hasSearch }}" hint-placeholder-val="{{ false }}">
+<div style="margin:0 16px 8px;display:flex;align-items:center;gap:8px;background:#f4f1ea;border-radius:14px;padding:0 12px;height:44px;flex:none">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6b6874" stroke-width="2" stroke-linecap="round"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4"></path></svg>
+<input value="{{ sheetQ }}" onChange="{{ setSheetQ }}" placeholder="Search" style="flex:1;border:0;outline:none;font-size:15px;background:none;color:#17161c"></div></sc-if>
+<div style="flex:1;overflow-y:auto;scrollbar-width:none;padding:0 16px">
+<sc-if value="{{ sh.isList }}" hint-placeholder-val="{{ false }}">
+<sc-for list="{{ sh.rows }}" as="o" hint-placeholder-count="6">
+<sc-if value="{{ o.isHeader }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;font-weight:700;color:#6b6874;padding:12px 4px 6px">{{ o.label }}</div></sc-if>
+<sc-if value="{{ o.isItem }}" hint-placeholder-val="{{ true }}">
+<div onClick="{{ o.tap }}" style="display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;cursor:pointer;background:{{ o.selBg }}">
+<div style="width:38px;height:38px;border-radius:12px;background:{{ o.bBg }};color:{{ o.bFg }};display:flex;align-items:center;justify-content:center;font:700 12px 'Bricolage Grotesque',sans-serif;flex:none">{{ o.badge }}</div>
+<div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ o.title }}</div><div style="font-size:12px;color:#6b6874">{{ o.sub }}</div></div>
+<div style="text-align:right;flex:none"><div style="font-size:13.5px;font-weight:700;font-variant-numeric:tabular-nums">{{ o.right }}</div><div style="font-size:11px;font-weight:700;color:{{ o.rightSubColor }}">{{ o.rightSub }}</div></div></div>
+</sc-if>
+</sc-for></sc-if>
+<sc-if value="{{ sh.isChooser }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:8px;padding-bottom:4px">
+<sc-for list="{{ sh.choices }}" as="c" hint-placeholder-count="3">
+<div onClick="{{ c.tap }}" style="background:{{ c.color }};color:#fff;border-radius:20px;padding:16px;cursor:pointer;display:flex;align-items:center;gap:14px">
+<div style="width:46px;height:46px;border-radius:15px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex:none"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ c.icon }}"></path></svg></div>
+<div><div style="font:800 18px 'Bricolage Grotesque',sans-serif">{{ c.title }}</div><div style="font-size:13px;margin-top:2px">{{ c.desc }}</div></div></div>
+</sc-for></div></sc-if>
+<sc-if value="{{ sh.isAdd }}" hint-placeholder-val="{{ false }}">
+<label style="display:block;margin-bottom:10px"><div style="font-size:12px;font-weight:600;color:#6b6874;margin:0 0 6px 4px">Name</div><input value="{{ ad.name }}" onChange="{{ ad.setName }}" placeholder="{{ ad.ph }}" style="width:100%;height:50px;border:1.5px solid rgba(23,22,28,.1);border-radius:14px;padding:0 14px;font-size:15px;background:#fff;outline:none;color:#17161c"></label>
+<sc-if value="{{ ad.isParty }}" hint-placeholder-val="{{ false }}">
+<label style="display:block;margin-bottom:10px"><div style="font-size:12px;font-weight:600;color:#6b6874;margin:0 0 6px 4px">Phone</div><input value="{{ ad.phone }}" onChange="{{ ad.setPhone }}" placeholder="0300 1234567" style="width:100%;height:50px;border:1.5px solid rgba(23,22,28,.1);border-radius:14px;padding:0 14px;font-size:15px;background:#fff;outline:none;color:#17161c"></label>
+<label style="display:block;margin-bottom:10px"><div style="font-size:12px;font-weight:600;color:#6b6874;margin:0 0 6px 4px">{{ ad.openingLabel }}</div><input value="{{ ad.opening }}" onChange="{{ ad.setOpening }}" placeholder="0" style="width:100%;height:50px;border:1.5px solid rgba(23,22,28,.1);border-radius:14px;padding:0 14px;font-size:15px;background:#fff;outline:none;color:#17161c"></label>
+</sc-if>
+<sc-for list="{{ errors }}" as="e" hint-placeholder-count="0"><div style="margin-bottom:10px;background:#fde0d8;color:#9e2a14;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:600">{{ e }}</div></sc-for>
+<button onClick="{{ saveAdd }}" style="width:100%;height:52px;border:0;border-radius:16px;background:#17161c;color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px">{{ ad.saveLabel }}</button>
+</sc-if>
+</div></div>
+</sc-if>
+
+<!-- TOAST -->
+<sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:16px;right:16px;bottom:100px;z-index:80;display:flex;justify-content:center;pointer-events:none"><div style="background:#17161c;color:#fff;border-radius:16px;padding:12px 16px;font-size:14px;font-weight:600;box-shadow:0 10px 30px rgba(23,22,28,.3)">{{ toast }}</div></div>
+</sc-if>
+<div style="position:absolute;left:50%;bottom:8px;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:#17161c;z-index:90;pointer-events:none"></div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;startTab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;home&quot;,&quot;sales&quot;,&quot;purchase&quot;,&quot;inventory&quot;,&quot;accounts&quot;],&quot;default&quot;:&quot;home&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;allowNegativeStock&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const TODAY = '2026-10-14';
+const C = { ink:'#17161c', mut:'#6b6874', bg:'#f4f1ea', sales:'#0b8049', salesL:'#d7f2e3', pur:'#2a5fd6', purL:'#dfe7fc', inv:'#f0a020', invD:'#9a6200', invL:'#fdecc8', acc:'#6d3fd6', accL:'#ebe3fc', rep:'#d9472b', repL:'#fde0d8', red:'#b3301a' };
+const ICON = {
+  home:'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',
+  sales:'M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6M9 16h3',
+  cart:'M3 4h2l2.5 11h10L20 8H6.5M9 20h.01M17 20h.01',
+  box:'M3 7l9-4 9 4v10l-9 4-9-4zM3 7l9 4 9-4M12 11v10',
+  book:'M4 5a2 2 0 0 1 2-2h14v16H6a2 2 0 0 0-2 2zM4 21V5M8 7h8M8 11h5',
+  inArrow:'M12 4v12M6 10l6 6 6-6M5 20h14',
+  outArrow:'M12 20V8M6 14l6-6 6 6M5 4h14',
+  swap:'M4 8h14l-4-4M20 16H6l4 4'
+};
+const KIND = {
+  SI:{ title:'Sale Invoice', short:'sale', party:'customer', color:C.sales, light:C.salesL, prefix:'SI-', paidLabel:'Received now', paidView:'Received', dueLabel:'Balance due', dueView:'Balance due' },
+  SR:{ title:'Sale Return', short:'return', party:'customer', color:C.sales, light:C.salesL, prefix:'SR-', paidLabel:'Refund paid now', paidView:'Refunded in cash', dueLabel:'Credited to account', dueView:'Credited to account' },
+  PI:{ title:'Purchase Invoice', short:'purchase', party:'supplier', color:C.pur, light:C.purL, prefix:'PI-', paidLabel:'Paid now', paidView:'Paid', dueLabel:'Balance payable', dueView:'Balance payable' },
+  PR:{ title:'Purchase Return', short:'return', party:'supplier', color:C.pur, light:C.purL, prefix:'PR-', paidLabel:'Refund received now', paidView:'Refund received', dueLabel:'Deducted from payable', dueView:'Deducted from payable' }
+};
+const VK = {
+  CRV:{ title:'Cash Receipt Voucher', short:'Cash Receipt', desc:'Money came into the cash drawer', color:C.sales, light:C.salesL, prefix:'CRV-', icon:ICON.inArrow, acctLabel:'Received from' },
+  CPV:{ title:'Cash Payment Voucher', short:'Cash Payment', desc:'Money went out of the cash drawer', color:C.rep, light:C.repL, prefix:'CPV-', icon:ICON.outArrow, acctLabel:'Paid to' },
+  JV:{ title:'Journal Voucher', short:'Journal', desc:'Move amounts between accounts, no cash involved', color:C.acc, light:C.accL, prefix:'JV-', icon:ICON.swap }
+};
+const COA = [
+  { code:'1', name:'Assets', type:'A', children:[
+    { code:'11', name:'Current Assets', children:[
+      { code:'1101', key:'cash', name:'Cash in Hand' },
+      { code:'1102', key:'bank', name:'Meezan Bank' },
+      { code:'1103', name:'Accounts Receivable', party:'customer' },
+      { code:'1104', key:'inv', name:'Stock in Hand' } ] },
+    { code:'12', name:'Fixed Assets', children:[ { code:'1201', key:'furn', name:'Furniture & Fixtures' } ] } ] },
+  { code:'2', name:'Liabilities', type:'L', children:[
+    { code:'21', name:'Current Liabilities', children:[ { code:'2101', name:'Accounts Payable', party:'supplier' } ] } ] },
+  { code:'3', name:'Equity', type:'E', children:[ { code:'3101', key:'capital', name:"Owner's Capital" }, { code:'3102', key:'draw', name:'Drawings' } ] },
+  { code:'4', name:'Income', type:'I', children:[ { code:'4101', key:'sales', name:'Sales' }, { code:'4102', key:'salesret', name:'Sales Returns' }, { code:'4201', key:'otherinc', name:'Other Income' } ] },
+  { code:'5', name:'Expenses', type:'X', children:[ { code:'5101', key:'cogs', name:'Cost of Goods Sold' }, { code:'5201', key:'rent', name:'Shop Rent' }, { code:'5202', key:'salary', name:'Salaries' }, { code:'5203', key:'elec', name:'Electricity' }, { code:'5204', key:'transport', name:'Transport' }, { code:'5205', key:'misc', name:'Miscellaneous' } ] }
+];
+const ACC = {};
+(function walk(ns, type){ ns.forEach(n => { n._type = n.type || type; if (n.key) ACC[n.key] = { code:n.code, name:n.name, type:n._type }; if (n.children) walk(n.children, n._type); }); })(COA, null);
+const TINTS = ['#d7f2e3','#dfe7fc','#fdecc8','#ebe3fc','#fde0d8','#e2efe9'];
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fmt = n => 'Rs ' + Math.round(Math.abs(n)).toLocaleString('en-US');
+const fmtS = n => (n < -0.5 ? '−' : '') + fmt(n);
+const fmtP = n => n < -0.5 ? '(' + fmt(n) + ')' : fmt(n);
+const num = v => { const x = parseFloat(String(v ?? '').replace(/,/g, '')); return isNaN(x) ? 0 : x; };
+const dl = s => { const p = s.split('-'); return (+p[2]) + ' ' + MON[+p[1] - 1]; };
+const ini = s => (s || '').split(/\s+/).filter(w => /[A-Za-z0-9]/.test(w[0] || '')).slice(0, 2).map(w => w[0]).join('').toUpperCase() || '?';
+const addDays = (s, n) => { const d = new Date(s + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+
+function seed() {
+  const L = (pid, qty, rate) => ({ pid, qty, rate });
+  return {
+    opening:{ cash:250000, bank:400000, furn:120000 },
+    categories:[ {id:'cat1',name:'Chargers'}, {id:'cat2',name:'Cables'}, {id:'cat3',name:'Audio'}, {id:'cat4',name:'Power Banks'}, {id:'cat5',name:'Smart Watches'} ],
+    brands:[ {id:'b1',name:'Anker'}, {id:'b2',name:'Samsung'}, {id:'b3',name:'Baseus'}, {id:'b4',name:'Xiaomi'}, {id:'b5',name:'Audionic'}, {id:'b6',name:'Ronin'} ],
+    products:[
+      {id:'p1',name:'Anker 20W USB-C Charger',sku:'ANK-20W',cat:'cat1',brand:'b1',cost:2400,price:3200,opening:40,reorder:10},
+      {id:'p2',name:'Samsung 25W Super Fast Charger',sku:'SAM-25W',cat:'cat1',brand:'b2',cost:3100,price:4200,opening:25,reorder:8},
+      {id:'p3',name:'Baseus 65W GaN Charger',sku:'BAS-65G',cat:'cat1',brand:'b3',cost:5200,price:6900,opening:12,reorder:4},
+      {id:'p4',name:'Anker USB-C to Lightning 1m',sku:'ANK-CL1',cat:'cat2',brand:'b1',cost:1500,price:2200,opening:60,reorder:15},
+      {id:'p5',name:'Baseus Type-C Cable 2m',sku:'BAS-TC2',cat:'cat2',brand:'b3',cost:650,price:1000,opening:80,reorder:20},
+      {id:'p6',name:'Xiaomi Redmi Buds 5',sku:'XMI-RB5',cat:'cat3',brand:'b4',cost:6200,price:7999,opening:18,reorder:5},
+      {id:'p7',name:'Audionic Airbud 550',sku:'AUD-550',cat:'cat3',brand:'b5',cost:2800,price:3799,opening:30,reorder:8},
+      {id:'p8',name:'Ronin R-7 Earphones',sku:'RON-R7',cat:'cat3',brand:'b6',cost:900,price:1450,opening:6,reorder:5},
+      {id:'p9',name:'Xiaomi 20000mAh Power Bank',sku:'XMI-PB20',cat:'cat4',brand:'b4',cost:5400,price:6999,opening:14,reorder:4},
+      {id:'p10',name:'Baseus 10000mAh Magnetic',sku:'BAS-MG10',cat:'cat4',brand:'b3',cost:4300,price:5800,opening:4,reorder:3},
+      {id:'p11',name:'Xiaomi Smart Band 9',sku:'XMI-SB9',cat:'cat5',brand:'b4',cost:8200,price:10499,opening:10,reorder:3},
+      {id:'p12',name:'Ronin R-06 Smart Watch',sku:'RON-W06',cat:'cat5',brand:'b6',cost:4900,price:6499,opening:3,reorder:3}
+    ],
+    customers:[
+      {id:'c0',name:'Walk-in Customer',phone:'Cash counter',opening:0},
+      {id:'c1',name:'Bilal Electronics',phone:'0300 4412870',opening:45000},
+      {id:'c2',name:'Ahmed Mobile Zone',phone:'0321 7781203',opening:18500},
+      {id:'c3',name:'Faisal Communication',phone:'0333 2109876',opening:0},
+      {id:'c4',name:'Zainab Traders',phone:'0345 5566120',opening:32000},
+      {id:'c5',name:'Hamza Raza',phone:'0312 9087711',opening:0}
+    ],
+    suppliers:[
+      {id:'s1',name:'Al-Fatah Distributors',phone:'021 3241 8800',opening:120000},
+      {id:'s2',name:'TechHub Imports',phone:'042 3575 1290',opening:65000},
+      {id:'s3',name:'Star Link Wholesale',phone:'0300 8123456',opening:0},
+      {id:'s4',name:'Audionic Pvt Ltd',phone:'021 3456 7000',opening:28000}
+    ],
+    invoices:[
+      {id:'i1',kind:'PI',no:'PI-0231',date:'2026-10-02',party:'s1',items:[L('p1',20,2400),L('p4',20,1500)],discount:0,paid:50000},
+      {id:'i2',kind:'SI',no:'SI-1040',date:'2026-10-03',party:'c1',items:[L('p1',10,3200),L('p5',20,1000)],discount:2000,paid:20000},
+      {id:'i3',kind:'SI',no:'SI-1041',date:'2026-10-05',party:'c0',items:[L('p6',1,7999),L('p4',2,2200)],discount:0,paid:12399},
+      {id:'i4',kind:'PI',no:'PI-0232',date:'2026-10-06',party:'s2',items:[L('p6',10,6200)],discount:0,paid:0},
+      {id:'i5',kind:'SI',no:'SI-1042',date:'2026-10-08',party:'c2',items:[L('p9',3,6999),L('p7',4,3799)],discount:193,paid:10000},
+      {id:'i6',kind:'SI',no:'SI-1043',date:'2026-10-09',party:'c3',items:[L('p4',5,2200)],discount:0,paid:11000},
+      {id:'i7',kind:'PI',no:'PI-0233',date:'2026-10-09',party:'s4',items:[L('p7',20,2800)],discount:0,paid:20000},
+      {id:'i8',kind:'SI',no:'SI-1044',date:'2026-10-10',party:'c4',items:[L('p2',6,4200),L('p3',2,6900)],discount:0,paid:0},
+      {id:'i9',kind:'PR',no:'PR-0007',date:'2026-10-10',party:'s2',items:[L('p6',1,6200)],discount:0,paid:0},
+      {id:'i10',kind:'SI',no:'SI-1045',date:'2026-10-11',party:'c0',items:[L('p4',1,2200),L('p5',3,1000)],discount:0,paid:5200},
+      {id:'i11',kind:'SR',no:'SR-0012',date:'2026-10-11',party:'c2',items:[L('p7',1,3799)],discount:0,paid:0},
+      {id:'i12',kind:'SI',no:'SI-1046',date:'2026-10-12',party:'c0',items:[L('p11',1,10499)],discount:0,paid:10499},
+      {id:'i13',kind:'SI',no:'SI-1047',date:'2026-10-13',party:'c5',items:[L('p7',2,3799),L('p8',3,1450)],discount:0,paid:11948},
+      {id:'i14',kind:'PI',no:'PI-0234',date:'2026-10-13',party:'s3',items:[L('p5',50,650)],discount:0,paid:32500},
+      {id:'i15',kind:'SI',no:'SI-1048',date:'2026-10-14',party:'c1',items:[L('p10',2,5800),L('p5',10,1000)],discount:0,paid:5000},
+      {id:'i16',kind:'SI',no:'SI-1049',date:'2026-10-14',party:'c0',items:[L('p1',1,3200)],discount:0,paid:3200}
+    ],
+    vouchers:[
+      {id:'v1',kind:'CPV',no:'CPV-0154',date:'2026-10-01',acct:'rent',amount:60000,narration:'October shop rent'},
+      {id:'v2',kind:'JV',no:'JV-0021',date:'2026-10-05',lines:[{acct:'bank',dr:50000,cr:0},{acct:'cash',dr:0,cr:50000}],narration:'Cash deposited to Meezan Bank'},
+      {id:'v3',kind:'CRV',no:'CRV-0088',date:'2026-10-07',acct:'ar:c1',amount:25000,narration:'Part payment against old balance'},
+      {id:'v4',kind:'CPV',no:'CPV-0155',date:'2026-10-09',acct:'ap:s1',amount:40000,narration:'Payment to Al-Fatah'},
+      {id:'v5',kind:'JV',no:'JV-0022',date:'2026-10-10',lines:[{acct:'salary',dr:45000,cr:0},{acct:'bank',dr:0,cr:45000}],narration:'Staff salaries for September'},
+      {id:'v6',kind:'CPV',no:'CPV-0156',date:'2026-10-11',acct:'elec',amount:14250,narration:'LESCO electricity bill'},
+      {id:'v7',kind:'CRV',no:'CRV-0089',date:'2026-10-12',acct:'ar:c4',amount:15000,narration:'Received from Zainab Traders'},
+      {id:'v8',kind:'CPV',no:'CPV-0157',date:'2026-10-13',acct:'transport',amount:3500,narration:'Courier and loading charges'}
+    ]
+  };
+}
+function info(k, d) {
+  if (k && k.startsWith('ar:')) { const i = d.customers.findIndex(c => c.id === k.slice(3)); const c = d.customers[i]; return { code:'1103-' + String(i + 1).padStart(2, '0'), name:c ? c.name : 'Customer', type:'A', party:'customer', pid:k.slice(3) }; }
+  if (k && k.startsWith('ap:')) { const i = d.suppliers.findIndex(c => c.id === k.slice(3)); const c = d.suppliers[i]; return { code:'2101-' + String(i + 1).padStart(2, '0'), name:c ? c.name : 'Supplier', type:'L', party:'supplier', pid:k.slice(3) }; }
+  return ACC[k] || { code:'', name:k || '', type:'A' };
+}
+function pmap(d) { const m = {}; d.products.forEach(p => m[p.id] = p); return m; }
+function totals(iv, pm) {
+  const sub = iv.items.reduce((s, x) => s + x.qty * x.rate, 0);
+  const total = Math.max(0, sub - (iv.discount || 0));
+  const cost = iv.items.reduce((s, x) => s + x.qty * (pm[x.pid] ? pm[x.pid].cost : 0), 0);
+  const paid = Math.min(iv.paid || 0, total);
+  return { sub, total, cost, paid, due:total - paid };
+}
+function partyOf(iv, d) { const list = KIND[iv.kind].party === 'customer' ? d.customers : d.suppliers; return list.find(p => p.id === iv.party) || { name:'—' }; }
+function post(d) {
+  const P = [], pm = pmap(d), O = '2026-10-01';
+  const add = (date, ref, doc, acct, dr, cr, memo, who) => { if (dr > 0 || cr > 0) P.push({ date, ref, doc, acct, dr, cr, memo, who }); };
+  const invOpen = d.products.reduce((s, p) => s + p.opening * p.cost, 0);
+  let assets = 0, liab = 0;
+  [['cash', d.opening.cash], ['bank', d.opening.bank], ['furn', d.opening.furn], ['inv', invOpen]].forEach(([k, v]) => { add(O, 'Opening', null, k, v, 0, 'Opening balance', 'Opening balance'); assets += v; });
+  d.customers.forEach(c => { if (c.opening) { add(O, 'Opening', null, 'ar:' + c.id, c.opening, 0, 'Opening balance', 'Opening balance'); assets += c.opening; } });
+  d.suppliers.forEach(s => { if (s.opening) { add(O, 'Opening', null, 'ap:' + s.id, 0, s.opening, 'Opening balance', 'Opening balance'); liab += s.opening; } });
+  add(O, 'Opening', null, 'capital', 0, assets - liab, 'Opening balance', 'Opening balance');
+  d.invoices.forEach(iv => {
+    const t = totals(iv, pm), who = partyOf(iv, d).name, doc = { t:'inv', id:iv.id }, r = iv.no, D = iv.date, ar = 'ar:' + iv.party, ap = 'ap:' + iv.party;
+    if (iv.kind === 'SI') { add(D,r,doc,ar,t.total,0,'Sale invoice',who); add(D,r,doc,'sales',0,t.total,'Sale invoice',who); add(D,r,doc,'cash',t.paid,0,'Received at sale',who); add(D,r,doc,ar,0,t.paid,'Received at sale',who); add(D,r,doc,'cogs',t.cost,0,'Cost of goods sold',who); add(D,r,doc,'inv',0,t.cost,'Stock sold',who); }
+    if (iv.kind === 'SR') { add(D,r,doc,'salesret',t.total,0,'Sale return',who); add(D,r,doc,ar,0,t.total,'Sale return',who); add(D,r,doc,ar,t.paid,0,'Refund paid',who); add(D,r,doc,'cash',0,t.paid,'Refund paid',who); add(D,r,doc,'inv',t.cost,0,'Stock returned',who); add(D,r,doc,'cogs',0,t.cost,'Stock returned',who); }
+    if (iv.kind === 'PI') { add(D,r,doc,'inv',t.total,0,'Purchase invoice',who); add(D,r,doc,ap,0,t.total,'Purchase invoice',who); add(D,r,doc,ap,t.paid,0,'Paid at purchase',who); add(D,r,doc,'cash',0,t.paid,'Paid at purchase',who); }
+    if (iv.kind === 'PR') { add(D,r,doc,ap,t.total,0,'Purchase return',who); add(D,r,doc,'inv',0,t.total,'Stock returned to supplier',who); add(D,r,doc,'cash',t.paid,0,'Refund received',who); add(D,r,doc,ap,0,t.paid,'Refund received',who); }
+  });
+  d.vouchers.forEach(v => {
+    const doc = { t:'v', id:v.id };
+    if (v.kind === 'CRV') { add(v.date,v.no,doc,'cash',v.amount,0,v.narration,info(v.acct,d).name); add(v.date,v.no,doc,v.acct,0,v.amount,v.narration,'Cash receipt'); }
+    else if (v.kind === 'CPV') { add(v.date,v.no,doc,v.acct,v.amount,0,v.narration,'Cash payment'); add(v.date,v.no,doc,'cash',0,v.amount,v.narration,info(v.acct,d).name); }
+    else v.lines.forEach(l => add(v.date,v.no,doc,l.acct,l.dr,l.cr,v.narration,'Journal'));
+  });
+  return P.map((p, i) => ({ ...p, i })).sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : a.i - b.i);
+}
+function stockMap(d) {
+  const s = {}; d.products.forEach(p => s[p.id] = p.opening);
+  const sign = { SI:-1, SR:1, PI:1, PR:-1 };
+  d.invoices.forEach(iv => iv.items.forEach(x => { s[x.pid] = (s[x.pid] || 0) + sign[iv.kind] * x.qty; }));
+  return s;
+}
+
+class Component extends DCLogic {
+  state = { tab:this.props.startTab ?? 'home', stack:[], data:seed(), seg:{ sales:'inv', purchase:'inv', inventory:'products', accounts:'vouchers' }, q:'', catFilter:'all', vFilter:'all', coaOpen:{ '1':true, '11':true, '2':true, '21':true, '4':true, '5':true }, sheet:null, sheetQ:'', draft:null, vdraft:null, pdraft:null, adraft:null, errors:[], toast:null };
+
+  go = tab => this.setState({ tab, stack:[], q:'', sheet:null, errors:[] });
+  push = s => this.setState(st => ({ stack:[...st.stack, s], sheet:null }));
+  pop = () => this.setState(st => ({ stack:st.stack.slice(0, -1), errors:[], sheet:null }));
+  closeSheet = () => this.setState({ sheet:null, sheetQ:'', errors:[] });
+  openSheet = sheet => this.setState({ sheet, sheetQ:'', errors:[] });
+  flash = msg => { this.setState({ toast:msg }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ toast:null }), 2600); };
+  componentWillUnmount() { clearTimeout(this._t); }
+  nextNo(prefix, list) { let max = 0, len = 4; list.forEach(x => { if (x.no.startsWith(prefix)) { const s = x.no.slice(prefix.length); len = s.length; max = Math.max(max, +s); } }); return prefix + String(max + 1).padStart(len, '0'); }
+  openDoc = doc => { if (!doc) return; this.push(doc.t === 'inv' ? { name:'invoiceView', id:doc.id } : { name:'voucherView', id:doc.id }); };
+
+  newInvoice = (kind, pre = {}) => {
+    const d = this.state.data;
+    const draft = { kind, no:this.nextNo(KIND[kind].prefix, d.invoices), date:TODAY, party:pre.party ?? (kind === 'SI' ? 'c0' : ''), items:(pre.items || []).map(x => ({ pid:x.pid, qty:x.qty, rate:String(x.rate) })), discount:'', paid:'' };
+    this.setState(st => ({ draft, errors:[], sheet:null, stack:[...st.stack, { name:'invoiceForm' }] }));
+  };
+  updDraft = fn => this.setState(st => ({ draft:fn(st.draft), errors:[] }));
+  addItem = pid => this.updDraft(dr => {
+    const items = dr.items.slice(); const i = items.findIndex(x => x.pid === pid);
+    const p = this.state.data.products.find(x => x.id === pid);
+    if (i >= 0) items[i] = { ...items[i], qty:items[i].qty + 1 };
+    else items.push({ pid, qty:1, rate:String(dr.kind === 'SI' || dr.kind === 'SR' ? p.price : p.cost) });
+    return { ...dr, items };
+  });
+  saveInvoice = () => {
+    const st = this.state, dr = st.draft, d = st.data, S = stockMap(d), pm = pmap(d), errs = [];
+    if (!dr.party) errs.push('Choose a ' + KIND[dr.kind].party + ' first.');
+    const items = dr.items.filter(x => x.qty > 0).map(x => ({ pid:x.pid, qty:x.qty, rate:num(x.rate) }));
+    if (!items.length) errs.push('Add at least one product.');
+    if ((dr.kind === 'SI' || dr.kind === 'PR') && !this.props.allowNegativeStock) items.forEach(x => { if (x.qty > (S[x.pid] || 0)) errs.push(pm[x.pid].name + ': only ' + (S[x.pid] || 0) + ' in stock.'); });
+    if (errs.length) return this.setState({ errors:errs });
+    const iv = { id:'i' + Date.now(), kind:dr.kind, no:dr.no, date:dr.date, party:dr.party, items, discount:num(dr.discount), paid:num(dr.paid) };
+    this.setState(s => ({ data:{ ...s.data, invoices:[...s.data.invoices, iv] }, stack:[...s.stack.slice(0, -1), { name:'invoiceView', id:iv.id }], draft:null, errors:[] }));
+    this.flash(iv.no + ' saved · stock and accounts updated');
+  };
+
+  newVoucher = (kind, pre = {}) => {
+    const d = this.state.data;
+    const vdraft = { kind, no:this.nextNo(VK[kind].prefix, d.vouchers), date:TODAY, acct:pre.acct || '', amount:pre.amount ? String(pre.amount) : '', narration:'', lines:[{ acct:'', dr:'', cr:'' }, { acct:'', dr:'', cr:'' }] };
+    this.setState(st => ({ vdraft, errors:[], sheet:null, stack:[...st.stack, { name:'voucherForm' }] }));
+  };
+  updV = fn => this.setState(st => ({ vdraft:fn(st.vdraft), errors:[] }));
+  saveVoucher = () => {
+    const v = this.state.vdraft, errs = [];
+    let rec;
+    if (v.kind === 'JV') {
+      const lines = v.lines.map(l => ({ acct:l.acct, dr:num(l.dr), cr:num(l.cr) })).filter(l => l.acct || l.dr || l.cr);
+      if (lines.some(l => !l.acct)) errs.push('Every line needs an account.');
+      const dt = lines.reduce((s, l) => s + l.dr, 0), ct = lines.reduce((s, l) => s + l.cr, 0);
+      if (lines.length < 2) errs.push('A journal needs at least two lines.');
+      if (!dt || Math.abs(dt - ct) > 0.5) errs.push('Debit and credit must be equal.');
+      rec = { lines };
+    } else {
+      if (!v.acct) errs.push('Choose who the money was ' + (v.kind === 'CRV' ? 'received from.' : 'paid to.'));
+      if (!(num(v.amount) > 0)) errs.push('Enter an amount.');
+      rec = { acct:v.acct, amount:num(v.amount) };
+    }
+    if (errs.length) return this.setState({ errors:errs });
+    const nv = { id:'v' + Date.now(), kind:v.kind, no:v.no, date:v.date, narration:v.narration || VK[v.kind].short, ...rec };
+    this.setState(s => ({ data:{ ...s.data, vouchers:[...s.data.vouchers, nv] }, stack:[...s.stack.slice(0, -1), { name:'voucherView', id:nv.id }], vdraft:null, errors:[] }));
+    this.flash(nv.no + ' posted to the books');
+  };
+
+  editProduct = (id) => {
+    const d = this.state.data, p = id ? d.products.find(x => x.id === id) : null;
+    const pdraft = p ? { id:p.id, name:p.name, sku:p.sku, cat:p.cat, brand:p.brand, cost:String(p.cost), price:String(p.price), opening:String(p.opening), reorder:String(p.reorder) } : { id:null, name:'', sku:'', cat:d.categories[0].id, brand:d.brands[0].id, cost:'', price:'', opening:'', reorder:'5' };
+    this.setState(st => ({ pdraft, errors:[], sheet:null, stack:[...st.stack, { name:'productForm' }] }));
+  };
+  updP = patch => this.setState(st => ({ pdraft:{ ...st.pdraft, ...patch }, errors:[] }));
+  saveProduct = () => {
+    const p = this.state.pdraft, errs = [];
+    if (!p.name.trim()) errs.push('Give the product a name.');
+    if (!(num(p.price) > 0)) errs.push('Enter a sale price.');
+    if (!(num(p.cost) > 0)) errs.push('Enter a cost price.');
+    if (errs.length) return this.setState({ errors:errs });
+    const rec = { name:p.name.trim(), sku:p.sku.trim() || p.name.slice(0, 3).toUpperCase() + '-' + String(Date.now()).slice(-3), cat:p.cat, brand:p.brand, cost:num(p.cost), price:num(p.price), opening:num(p.opening), reorder:num(p.reorder) };
+    this.setState(s => {
+      const products = p.id ? s.data.products.map(x => x.id === p.id ? { ...x, ...rec, opening:x.opening } : x) : [...s.data.products, { id:'p' + Date.now(), ...rec }];
+      return { data:{ ...s.data, products }, stack:s.stack.slice(0, -1), pdraft:null };
+    });
+    this.flash(p.id ? 'Product updated' : rec.name + ' added to catalogue');
+  };
+
+  openAdd = type => this.setState({ sheet:{ type:'add' }, adraft:{ type, name:'', phone:'', opening:'' }, errors:[] });
+  saveAdd = () => {
+    const a = this.state.adraft;
+    if (!a.name.trim()) return this.setState({ errors:['Enter a name.'] });
+    const id = a.type[0] + Date.now();
+    this.setState(s => {
+      const d = { ...s.data }; const extra = {};
+      if (a.type === 'category') { d.categories = [...d.categories, { id, name:a.name.trim() }]; if (s.pdraft && s.stack.length) extra.pdraft = { ...s.pdraft, cat:id }; }
+      if (a.type === 'brand') { d.brands = [...d.brands, { id, name:a.name.trim() }]; if (s.pdraft && s.stack.length) extra.pdraft = { ...s.pdraft, brand:id }; }
+      if (a.type === 'customer') d.customers = [...d.customers, { id, name:a.name.trim(), phone:a.phone || '—', opening:num(a.opening) }];
+      if (a.type === 'supplier') d.suppliers = [...d.suppliers, { id, name:a.name.trim(), phone:a.phone || '—', opening:num(a.opening) }];
+      return { data:d, sheet:null, adraft:null, errors:[], ...extra };
+    });
+    this.flash(a.name.trim() + ' added');
+  };
+
+  renderVals() {
+    const st = this.state, d = st.data, pm = pmap(d), P = post(d), S = stockMap(d);
+    const B = {}; P.forEach(p => { B[p.acct] = (B[p.acct] || 0) + p.dr - p.cr; });
+    const nb = k => { const t = info(k, d).type; const v = B[k] || 0; return (t === 'A' || t === 'X') ? v : -v; };
+    const arSum = d.customers.reduce((s, c) => s + nb('ar:' + c.id), 0);
+    const apSum = d.suppliers.reduce((s, c) => s + nb('ap:' + c.id), 0);
+    const top = st.stack[st.stack.length - 1], scr = top ? top.name : null;
+    const q = st.q.trim().toLowerCase();
+    const T = iv => totals(iv, pm);
+
+    // P&L figures
+    const incomeKeys = ['sales', 'salesret', 'otherinc'], expKeys = ['rent', 'salary', 'elec', 'transport', 'misc'];
+    const sales = nb('sales'), salesret = nb('salesret'), netSales = sales + salesret, cogs = nb('cogs'), gp = netSales - cogs, other = nb('otherinc');
+    const totalExp = expKeys.reduce((s, k) => s + nb(k), 0), net = gp + other - totalExp;
+    const totalAssets = nb('cash') + nb('bank') + arSum + nb('inv') + nb('furn');
+    const openReport = type => () => this.push({ name:'report', type });
+    const tbTotal = Object.keys(B).reduce((s, k) => s + Math.max(0, B[k]), 0);
+    const cashIn = P.filter(p => p.acct === 'cash' && p.ref !== 'Opening').reduce((s, p) => s + p.dr, 0);
+    const cashOut = P.filter(p => p.acct === 'cash').reduce((s, p) => s + p.cr, 0);
+    const reportTiles = [
+      { title:'Cash Book', desc:'Every rupee in and out of the cash drawer', color:C.sales, figureLabel:'Cash now', figure:fmt(nb('cash')), open:openReport('cashbook') },
+      { title:'Profit & Loss', desc:'Did the shop make money this month?', color:C.rep, figureLabel:net >= 0 ? 'Profit' : 'Loss', figure:fmtS(net), open:openReport('pl') },
+      { title:'Balance Sheet', desc:'What the business owns and owes', color:C.pur, figureLabel:'Total assets', figure:fmt(totalAssets), open:openReport('bs') },
+      { title:'Trial Balance', desc:'Check that all the books add up', color:C.ink, figureLabel:'Each side', figure:fmt(tbTotal), open:openReport('tb') },
+      { title:'General Ledger', desc:'Every entry, account by account', color:C.acc, figureLabel:'Postings', figure:P.length + ' entries', open:openReport('gl') },
+      { title:'Sales Report', desc:'Sales and returns between any two dates', color:C.sales, figureLabel:'Net sales', figure:fmt(netSales), open:openReport('sales') },
+      { title:'Stock Summary', desc:'Opening, in, out and closing stock for every product', color:C.invD, figureLabel:'Stock value', figure:fmt(nb('inv')), open:openReport('stock') },
+      { title:'Stock Ledger', desc:'Every movement of one product with running quantity', color:'#7a4d00', figureLabel:'Products', figure:d.products.length + ' items', open:openReport('stockledger') },
+      { title:'Purchase Report', desc:'Purchases and returns between any two dates', color:C.pur, figureLabel:'Net purchases', figure:fmt(d.invoices.reduce((s, iv) => s + (iv.kind === 'PI' ? 1 : iv.kind === 'PR' ? -1 : 0) * T(iv).total, 0)), open:openReport('purchase') }
+    ];
+
+    // tabs
+    const TABS = [['home','Home',ICON.home,C.ink,'#ece8df'],['sales','Sales',ICON.sales,C.sales,C.salesL],['purchase','Purchase',ICON.cart,C.pur,C.purL],['inventory','Inventory',ICON.box,C.invD,C.invL],['accounts','Accounts',ICON.book,C.acc,C.accL]];
+    const tabs = TABS.map(([id, label, icon, fg, bg]) => ({ label, icon, go:() => this.go(id), fg:st.tab === id ? fg : '#8a8790', bg:st.tab === id ? bg : 'transparent' }));
+    const segTo = (tab, val) => () => this.setState(s => ({ seg:{ ...s.seg, [tab]:val }, q:'' }));
+    const goSeg = (tab, val) => () => this.setState(s => ({ tab, stack:[], seg:{ ...s.seg, [tab]:val }, q:'' }));
+
+    // home
+    const week = [];
+    for (let i = 6; i >= 0; i--) {
+      const day = addDays(TODAY, -i);
+      const v = d.invoices.filter(iv => iv.date === day && (iv.kind === 'SI' || iv.kind === 'SR')).reduce((s, iv) => s + (iv.kind === 'SI' ? 1 : -1) * T(iv).total, 0);
+      week.push({ day, v:Math.max(0, v), label:'SMTWTFS'[new Date(day + 'T12:00:00Z').getUTCDay()] });
+    }
+    const wmax = Math.max(1, ...week.map(w => w.v));
+    const todaySI = d.invoices.filter(iv => iv.date === TODAY && iv.kind === 'SI');
+    const lowList = d.products.filter(p => (S[p.id] || 0) <= p.reorder);
+    const allDocs = [
+      ...d.invoices.map(iv => ({ date:iv.date, no:iv.no, badge:iv.kind, color:KIND[iv.kind].color, light:KIND[iv.kind].light, title:partyOf(iv, d).name, sub:iv.no + ' · ' + dl(iv.date), amount:fmt(T(iv).total), amtColor:C.ink, open:() => this.push({ name:'invoiceView', id:iv.id }) })),
+      ...d.vouchers.map(v => ({ date:v.date, no:v.no, badge:v.kind, color:VK[v.kind].color, light:VK[v.kind].light, title:v.narration, sub:v.no + ' · ' + dl(v.date), amount:(v.kind === 'CRV' ? '+' : v.kind === 'CPV' ? '−' : '') + fmt(v.kind === 'JV' ? v.lines.reduce((s, l) => s + l.dr, 0) : v.amount), amtColor:v.kind === 'CRV' ? C.sales : v.kind === 'CPV' ? C.rep : C.ink, open:() => this.push({ name:'voucherView', id:v.id }) }))
+    ].sort((a, b) => a.date === b.date ? (a.no < b.no ? 1 : -1) : (a.date < b.date ? 1 : -1));
+    const owingC = d.customers.filter(c => nb('ar:' + c.id) > 0.5).length, owingS = d.suppliers.filter(c => nb('ap:' + c.id) > 0.5).length;
+    const home = {
+      dateLabel:new Date(TODAY + 'T12:00:00Z').toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', timeZone:'UTC' }),
+      todaySales:fmt(todaySI.reduce((s, iv) => s + T(iv).total, 0)), todayCount:todaySI.length + (todaySI.length === 1 ? ' invoice' : ' invoices'),
+      week:week.map(w => ({ label:w.label, h:Math.max(6, Math.round(w.v / wmax * 66)) + 'px', bg:w.day === TODAY ? '#fff' : 'rgba(255,255,255,.35)', op:w.day === TODAY ? 1 : 0.75 })),
+      cash:fmt(nb('cash')), bank:fmt(nb('bank')), profit:fmtS(net), receivable:fmt(arSum), payable:fmt(apSum),
+      receivableSub:'from ' + owingC + ' customers', payableSub:'to ' + owingS + ' suppliers',
+      openSales:goSeg('sales', 'inv'), openCash:openReport('cashbook'), openPL:openReport('pl'), openCustomers:goSeg('sales', 'party'), openSuppliers:goSeg('purchase', 'party'),
+      actions:[
+        { label:'New sale', icon:ICON.sales, bg:C.sales, tap:() => this.newInvoice('SI') },
+        { label:'New purchase', icon:ICON.cart, bg:C.pur, tap:() => this.newInvoice('PI') },
+        { label:'Receive cash', icon:ICON.inArrow, bg:C.acc, tap:() => this.newVoucher('CRV') },
+        { label:'Pay cash', icon:ICON.outArrow, bg:C.rep, tap:() => this.newVoucher('CPV') }
+      ],
+      hasLow:lowList.length > 0, lowCount:lowList.length + ' items',
+      low:lowList.slice(0, 4).map(p => ({ name:p.name, stockLabel:(S[p.id] || 0) + ' left', open:() => this.editProduct(p.id) })),
+      recent:allDocs.slice(0, 5)
+    };
+
+    // sales / purchase tabs
+    const isDocTab = !scr && (st.tab === 'sales' || st.tab === 'purchase');
+    let doc = {};
+    if (st.tab === 'sales' || st.tab === 'purchase') {
+      const isS = st.tab === 'sales', seg = st.seg[st.tab], kinds = isS ? ['SI', 'SR'] : ['PI', 'PR'];
+      const color = isS ? C.sales : C.pur, light = isS ? C.salesL : C.purL;
+      const kind = seg === 'ret' ? kinds[1] : kinds[0];
+      const rows = d.invoices.filter(iv => iv.kind === kind).filter(iv => !q || (partyOf(iv, d).name + ' ' + iv.no).toLowerCase().includes(q))
+        .sort((a, b) => a.date === b.date ? (a.no < b.no ? 1 : -1) : (a.date < b.date ? 1 : -1))
+        .map(iv => { const t = T(iv), ret = iv.kind === 'SR' || iv.kind === 'PR';
+          const status = ret ? (t.due <= 0.5 ? 'Refunded' : 'Credited') : (t.due <= 0.5 ? 'Paid' : t.paid > 0 ? 'Partial' : 'Unpaid');
+          const sc = { Paid:[C.salesL, '#0b5c35'], Refunded:[C.salesL, '#0b5c35'], Credited:['#ece8df', '#3d3b44'], Partial:[C.invL, '#7a4d00'], Unpaid:[C.repL, '#9e2a14'] }[status];
+          return { kind:iv.kind, party:partyOf(iv, d).name, sub:iv.no + ' · ' + dl(iv.date) + ' · ' + iv.items.reduce((s, x) => s + x.qty, 0) + ' pcs', total:fmt(t.total), status, stBg:sc[0], stFg:sc[1], color, light, open:() => this.push({ name:'invoiceView', id:iv.id }) }; });
+      const list = isS ? d.customers : d.suppliers, pre = isS ? 'ar:' : 'ap:';
+      const parties = list.filter(p => !q || p.name.toLowerCase().includes(q)).map(p => { const b = nb(pre + p.id);
+        return { ini:ini(p.name), name:p.name, phone:p.phone, bal:fmt(b), balLabel:b > 0.5 ? (isS ? 'owes you' : 'you owe') : b < -0.5 ? 'in advance' : 'settled', balColor:b > 0.5 ? color : C.mut, color, light, open:() => this.push({ name:'ledger', acct:pre + p.id }) }; });
+      const monthTotal = d.invoices.filter(iv => iv.kind === kinds[0]).reduce((s, iv) => s + T(iv).total, 0) - d.invoices.filter(iv => iv.kind === kinds[1]).reduce((s, iv) => s + T(iv).total, 0);
+      doc = {
+        title:isS ? 'Sales' : 'Purchase', color,
+        stat1Label:isS ? 'Net sales this month' : 'Net purchases this month', stat1:fmt(monthTotal),
+        stat2Label:isS ? 'To receive' : 'To pay', stat2:fmt(isS ? arSum : apSum),
+        segs:[['inv', 'Invoices'], ['ret', 'Returns'], ['party', isS ? 'Customers' : 'Suppliers']].map(([v, label]) => ({ label, go:segTo(st.tab, v), bg:seg === v ? '#fff' : 'transparent', fg:seg === v ? color : '#fff' })),
+        searchPh:seg === 'party' ? 'Search ' + (isS ? 'customers' : 'suppliers') : 'Search by name or number',
+        showDocs:seg !== 'party', showParties:seg === 'party', rows, parties,
+        empty:seg === 'party' ? !parties.length : !rows.length,
+        fabLabel:seg === 'inv' ? 'New invoice' : seg === 'ret' ? 'New return' : (isS ? 'Add customer' : 'Add supplier'),
+        fab:seg === 'party' ? () => this.openAdd(isS ? 'customer' : 'supplier') : () => this.newInvoice(kind)
+      };
+    }
+
+    // inventory
+    const isInventory = !scr && st.tab === 'inventory';
+    const iseg = st.seg.inventory;
+    const catIdx = {}; d.categories.forEach((c, i) => catIdx[c.id] = i);
+    const nameOf = (list, id) => (list.find(x => x.id === id) || { name:'—' }).name;
+    const prows = d.products.filter(p => st.catFilter === 'all' || p.cat === st.catFilter).filter(p => !q || (p.name + ' ' + p.sku + ' ' + nameOf(d.brands, p.brand)).toLowerCase().includes(q))
+      .map(p => { const s = S[p.id] || 0, low = s <= p.reorder;
+        return { name:p.name, ini:ini(nameOf(d.brands, p.brand)), tint:TINTS[(catIdx[p.cat] || 0) % TINTS.length], sub:nameOf(d.brands, p.brand) + ' · ' + nameOf(d.categories, p.cat), price:fmt(p.price), stock:s + ' in stock', stBg:low ? C.repL : '#eeebe4', stFg:low ? '#9e2a14' : '#3d3b44', open:() => this.editProduct(p.id) }; });
+    const groupsOf = (list, field) => list.filter(g => !q || g.name.toLowerCase().includes(q)).map((g, i) => { const ps = d.products.filter(p => p[field] === g.id);
+      return { name:g.name, ini:ini(g.name), tint:TINTS[i % TINTS.length], count:ps.length + (ps.length === 1 ? ' product' : ' products') + ' · ' + ps.reduce((s, p) => s + (S[p.id] || 0), 0) + ' pcs', value:fmt(ps.reduce((s, p) => s + (S[p.id] || 0) * p.cost, 0)),
+        open:() => field === 'cat' ? this.setState(s => ({ seg:{ ...s.seg, inventory:'products' }, catFilter:g.id, q:'' })) : this.setState(s => ({ seg:{ ...s.seg, inventory:'products' }, catFilter:'all', q:g.name.toLowerCase() })) }; });
+    const invt = {
+      count:d.products.length + ' products', value:fmt(d.products.reduce((s, p) => s + (S[p.id] || 0) * p.cost, 0)), low:lowList.length + ' items',
+      segs:[['products', 'Products'], ['cats', 'Categories'], ['brands', 'Brands']].map(([v, label]) => ({ label, go:segTo('inventory', v), bg:iseg === v ? '#fff' : 'transparent' })),
+      showProducts:iseg === 'products', showGroups:iseg !== 'products',
+      chips:[{ id:'all', name:'All' }, ...d.categories].map(c => ({ label:c.name, tap:() => this.setState({ catFilter:c.id }), bg:st.catFilter === c.id ? C.ink : '#fff', fg:st.catFilter === c.id ? '#fff' : C.ink })),
+      products:prows, noProducts:!prows.length,
+      groups:iseg === 'cats' ? groupsOf(d.categories, 'cat') : groupsOf(d.brands, 'brand'),
+      fabLabel:iseg === 'products' ? 'Add product' : iseg === 'cats' ? 'Add category' : 'Add brand',
+      fab:iseg === 'products' ? () => this.editProduct(null) : () => this.openAdd(iseg === 'cats' ? 'category' : 'brand')
+    };
+
+    // accounts
+    const isAccounts = !scr && st.tab === 'accounts';
+    const aseg = st.seg.accounts;
+    const vAmt = v => v.kind === 'JV' ? v.lines.reduce((s, l) => s + l.dr, 0) : v.amount;
+    const coa = [];
+    const nodeBal = n => n.key ? nb(n.key) : n.party ? (n.party === 'customer' ? arSum : apSum) : (n.children || []).reduce((s, c) => s + nodeBal(c), 0);
+    const flat = (nodes, depth) => nodes.forEach(n => {
+      const isGroup = !!(n.children || n.party), open = !!st.coaOpen[n.code];
+      coa.push({ code:n.code, name:n.name, bal:fmtP(nodeBal(n)), pad:(14 + depth * 16) + 'px', bg:depth === 0 ? '#faf8f4' : '#fff', weight:depth === 0 ? 700 : isGroup ? 600 : 500, rot:open ? '90deg' : '0deg', chevOp:isGroup ? 1 : 0,
+        tap:isGroup ? () => this.setState(s => ({ coaOpen:{ ...s.coaOpen, [n.code]:!s.coaOpen[n.code] } })) : () => this.push({ name:'ledger', acct:n.key }) });
+      if (isGroup && open) {
+        if (n.children) flat(n.children, depth + 1);
+        else { const list = n.party === 'customer' ? d.customers : d.suppliers, pre = n.party === 'customer' ? 'ar:' : 'ap:';
+          list.forEach(p => { const k = pre + p.id; coa.push({ code:info(k, d).code, name:p.name, bal:fmtP(nb(k)), pad:(14 + (depth + 1) * 16) + 'px', bg:'#fff', weight:400, rot:'0deg', chevOp:0, tap:() => this.push({ name:'ledger', acct:k }) }); }); }
+      }
+    });
+    flat(COA, 0);
+    const acc = {
+      cash:fmt(nb('cash')), bank:fmt(nb('bank')),
+      segs:[['vouchers', 'Vouchers'], ['coa', 'Accounts'], ['reports', 'Reports']].map(([v, label]) => ({ label, go:segTo('accounts', v), bg:aseg === v ? '#fff' : 'transparent', fg:aseg === v ? C.acc : '#fff' })),
+      showVouchers:aseg === 'vouchers', showCoa:aseg === 'coa', showReports:aseg === 'reports', showFab:aseg === 'vouchers',
+      chips:[['all', 'All'], ['CRV', 'Receipts'], ['CPV', 'Payments'], ['JV', 'Journals']].map(([v, label]) => ({ label, tap:() => this.setState({ vFilter:v }), bg:st.vFilter === v ? C.ink : '#fff', fg:st.vFilter === v ? '#fff' : C.ink })),
+      vouchers:d.vouchers.filter(v => st.vFilter === 'all' || v.kind === st.vFilter).slice().sort((a, b) => a.date === b.date ? (a.no < b.no ? 1 : -1) : (a.date < b.date ? 1 : -1)).map(v => ({
+        kind:v.kind, color:VK[v.kind].color, light:VK[v.kind].light, title:v.narration,
+        sub:v.no + ' · ' + dl(v.date) + ' · ' + (v.kind === 'JV' ? v.lines.map(l => info(l.acct, d).name).join(' → ') : info(v.acct, d).name),
+        amount:(v.kind === 'CRV' ? '+' : v.kind === 'CPV' ? '−' : '') + fmt(vAmt(v)), amtColor:v.kind === 'CRV' ? C.sales : v.kind === 'CPV' ? C.rep : C.ink,
+        open:() => this.push({ name:'voucherView', id:v.id }) })),
+      coa
+    };
+
+    // invoice form
+    let invf = {};
+    if (scr === 'invoiceForm' && st.draft) {
+      const dr = st.draft, K = KIND[dr.kind], plist = K.party === 'customer' ? d.customers : d.suppliers, party = plist.find(p => p.id === dr.party);
+      const items = dr.items.map((x, i) => { const p = pm[x.pid], s = S[x.pid] || 0, outflow = dr.kind === 'SI' || dr.kind === 'PR', warn = outflow && x.qty > s;
+        const upd = fn => this.updDraft(df => ({ ...df, items:df.items.map((y, j) => j === i ? fn(y) : y) }));
+        return { name:p.name, qty:x.qty, rate:x.rate, line:fmt(x.qty * num(x.rate)), stockLabel:warn ? 'Only ' + s + ' in stock' : s + ' in stock', stockColor:warn ? C.red : C.mut,
+          inc:() => upd(y => ({ ...y, qty:y.qty + 1 })), dec:() => upd(y => ({ ...y, qty:Math.max(1, y.qty - 1) })), setRate:e => upd(y => ({ ...y, rate:e.target.value })),
+          remove:() => this.updDraft(df => ({ ...df, items:df.items.filter((_, j) => j !== i) })) }; });
+      const sub = dr.items.reduce((s, x) => s + x.qty * num(x.rate), 0), total = Math.max(0, sub - num(dr.discount)), paid = Math.min(num(dr.paid), total), due = total - paid;
+      const pn = party ? party.name : 'the ' + K.party;
+      const hint = !party ? 'Pick a ' + K.party + ' to continue.' :
+        dr.kind === 'SI' ? (due > 0.5 ? fmt(due) + ' will be added to what ' + pn + ' owes you.' : 'Fully paid. Cash goes into your cash book.') :
+        dr.kind === 'PI' ? (due > 0.5 ? fmt(due) + ' will be added to what you owe ' + pn + '.' : 'Fully paid from cash.') :
+        dr.kind === 'SR' ? 'Items go back into stock. ' + (due > 0.5 ? fmt(due) + ' is taken off what ' + pn + ' owes you.' : 'Refund paid from cash.') :
+        'Items leave your stock. ' + (due > 0.5 ? fmt(due) + ' is taken off what you owe ' + pn + '.' : 'Refund received in cash.');
+      invf = { color:K.color, light:K.light, title:K.title, short:K.short, no:dr.no, dateLabel:'Today, ' + dl(dr.date), partyLabel:K.party === 'customer' ? 'Customer' : 'Supplier', partyName:party ? party.name : 'Choose ' + K.party, partyIni:party ? ini(party.name) : '+',
+        items, empty:!items.length, count:items.length ? items.length : '', sub:fmt(sub), total:fmt(total), discount:dr.discount, paid:dr.paid, paidLabel:K.paidLabel, dueLabel:K.dueLabel, due:fmt(due), dueColor:due > 0.5 ? K.color : C.mut, hint };
+    }
+
+    // invoice view
+    let iv = {};
+    if (scr === 'invoiceView') {
+      const x = d.invoices.find(i => i.id === top.id);
+      if (x) { const K = KIND[x.kind], t = T(x), ret = x.kind === 'SR' || x.kind === 'PR', pre = K.party === 'customer' ? 'ar:' : 'ap:';
+        iv = { color:K.color, light:K.light, title:K.title, no:x.no, date:dl(x.date) + ' 2026', partyLabel:K.party === 'customer' ? 'Customer' : 'Supplier', party:partyOf(x, d).name,
+          status:ret ? (t.due <= 0.5 ? 'Refunded' : 'Credited') : (t.due <= 0.5 ? 'Paid' : t.paid > 0 ? 'Partly paid' : 'Unpaid'),
+          items:x.items.map(it => ({ name:pm[it.pid].name, qtyRate:it.qty + ' × ' + fmt(it.rate), line:fmt(it.qty * it.rate) })),
+          sub:fmt(t.sub), discount:x.discount ? '−' + fmt(x.discount) : 'Rs 0', total:fmt(t.total), paid:fmt(t.paid), due:fmt(t.due), paidLabel:K.paidView, dueLabel:K.dueView,
+          canReturn:!ret, returnLabel:x.kind === 'SI' ? 'Customer returned items' : 'Return items to supplier',
+          makeReturn:() => this.newInvoice(x.kind === 'SI' ? 'SR' : 'PR', { party:x.party, items:x.items }),
+          ledgerLabel:K.party === 'customer' ? 'Customer ledger' : 'Supplier ledger', openLedger:() => this.push({ name:'ledger', acct:pre + x.party }),
+          share:() => this.flash(x.no + ' PDF ready to share') }; }
+    }
+
+    // ledger
+    let lg = {};
+    if (scr === 'ledger') {
+      const k = top.acct, I = info(k, d), debitNormal = I.type === 'A' || I.type === 'X';
+      let run = 0;
+      const rows = P.filter(p => p.acct === k).map(p => { const delta = debitNormal ? p.dr - p.cr : p.cr - p.dr; run += delta; const [y, m, dd] = p.date.split('-');
+        return { day:+dd, mon:MON[+m - 1], title:p.memo, ref:p.ref === 'Opening' ? 'Brought forward' : p.ref, amt:(delta >= 0 ? '+' : '−') + fmt(delta), amtColor:delta >= 0 ? C.ink : C.rep, bal:fmtP(run), open:() => this.openDoc(p.doc) }; }).reverse();
+      const b = nb(k), isAR = k.startsWith('ar:'), isAP = k.startsWith('ap:'), pid = I.pid;
+      lg = { code:I.code, name:I.name, color:isAR ? C.sales : isAP ? C.pur : C.acc, bal:fmt(b), count:rows.length + ' entries',
+        balLabel:isAR ? (b > 0.5 ? 'Owes you' : b < -0.5 ? 'Paid in advance' : 'All settled') : isAP ? (b > 0.5 ? 'You owe' : b < -0.5 ? 'Paid in advance' : 'All settled') : 'Current balance',
+        rows, hasActions:isAR || isAP,
+        act1Label:isAR ? 'Receive payment' : 'Make payment', act1:() => this.newVoucher(isAR ? 'CRV' : 'CPV', { acct:k, amount:b > 0 ? Math.round(b) : '' }),
+        act2Label:isAR ? 'New sale' : 'New purchase', act2:() => this.newInvoice(isAR ? 'SI' : 'PI', { party:pid }) };
+    }
+
+    // product form
+    let pf = {};
+    if (scr === 'productForm' && st.pdraft) {
+      const p = st.pdraft, m = num(p.price) - num(p.cost), pct = num(p.price) > 0 ? Math.round(m / num(p.price) * 100) : 0;
+      const sold = p.id ? d.invoices.filter(iv => iv.kind === 'SI').reduce((s, iv) => s + iv.items.filter(x => x.pid === p.id).reduce((a, x) => a + x.qty, 0), 0) : 0;
+      const chip = (list, field) => list.map(c => ({ label:c.name, tap:() => this.updP({ [field]:c.id }), bg:p[field] === c.id ? C.ink : '#fff', fg:p[field] === c.id ? '#fff' : C.ink }));
+      pf = { heading:p.id ? 'Edit product' : 'New product', isEdit:!!p.id, openSL:() => this.setState(s => ({ slProd:p.id, stack:[...s.stack, { name:'report', type:'stockledger' }] })), stockNow:(S[p.id] || 0) + ' pcs', sold:sold + ' pcs',
+        name:p.name, sku:p.sku, cost:p.cost, price:p.price, opening:p.opening, reorder:p.reorder,
+        openingLabel:p.id ? 'Opening stock' : 'Stock you have now',
+        setName:e => this.updP({ name:e.target.value }), setSku:e => this.updP({ sku:e.target.value }), setCost:e => this.updP({ cost:e.target.value }), setPrice:e => this.updP({ price:e.target.value }), setOpening:e => this.updP({ opening:e.target.value }), setReorder:e => this.updP({ reorder:e.target.value }),
+        cats:chip(d.categories, 'cat'), brands:chip(d.brands, 'brand'), addCat:() => this.openAdd('category'), addBrand:() => this.openAdd('brand'),
+        margin:num(p.price) && num(p.cost) ? fmtS(m) + ' · ' + pct + '%' : '—', marginBg:m < 0 ? C.repL : C.salesL, marginFg:m < 0 ? '#9e2a14' : '#0b5c35',
+        saveLabel:p.id ? 'Save changes' : 'Add to catalogue' };
+    }
+
+    // voucher form
+    let vf = {};
+    if (scr === 'voucherForm' && st.vdraft) {
+      const v = st.vdraft, K = VK[v.kind], a = v.acct ? info(v.acct, d) : null, amt = num(v.amount);
+      const lines = v.lines.map((l, i) => { const upd = patch => this.updV(x => ({ ...x, lines:x.lines.map((y, j) => j === i ? { ...y, ...patch } : y) }));
+        return { n:i + 1, name:l.acct ? info(l.acct, d).name : 'Choose account', dr:l.dr, cr:l.cr, setDr:e => upd({ dr:e.target.value }), setCr:e => upd({ cr:e.target.value }),
+          pick:() => this.openSheet({ type:'acct', target:'jv', idx:i }), remove:() => this.updV(x => ({ ...x, lines:x.lines.length > 2 ? x.lines.filter((_, j) => j !== i) : x.lines.map((y, j) => j === i ? { acct:'', dr:'', cr:'' } : y) })) }; });
+      const dt = v.lines.reduce((s, l) => s + num(l.dr), 0), ct = v.lines.reduce((s, l) => s + num(l.cr), 0), ok = dt > 0 && Math.abs(dt - ct) < 0.5;
+      const preview = v.kind === 'CRV' ? [{ side:'Dr', c:C.sales, name:'Cash in Hand', amt:fmt(amt) }, { side:'Cr', c:C.rep, name:a ? a.name : '—', amt:fmt(amt) }] : [{ side:'Dr', c:C.sales, name:a ? a.name : '—', amt:fmt(amt) }, { side:'Cr', c:C.rep, name:'Cash in Hand', amt:fmt(amt) }];
+      vf = { color:K.color, light:K.light, title:K.title, desc:K.desc, no:v.no, dateLabel:'Today, ' + dl(v.date), isCash:v.kind !== 'JV', isJV:v.kind === 'JV',
+        amount:v.amount, setAmount:e => this.updV(x => ({ ...x, amount:e.target.value })), narration:v.narration, setNarr:e => this.updV(x => ({ ...x, narration:e.target.value })),
+        acctLabel:K.acctLabel, acctName:a ? a.name : 'Choose account', acctIni:a ? ini(a.name) : '+', pickAcct:() => this.openSheet({ type:'acct', target:'v' }),
+        lines, addLine:() => this.updV(x => ({ ...x, lines:[...x.lines, { acct:'', dr:'', cr:'' }] })),
+        dt:fmt(dt), ct:fmt(ct), balMsg:ok ? 'Balanced, ready to save' : dt + ct === 0 ? 'Enter debit and credit amounts' : 'Off by ' + fmt(dt - ct),
+        balBg:ok ? C.salesL : '#ece8df', balFg:ok ? '#0b5c35' : C.ink, preview };
+    }
+
+    // voucher view
+    let vv = {};
+    if (scr === 'voucherView') {
+      const v = d.vouchers.find(x => x.id === top.id);
+      if (v) { const K = VK[v.kind];
+        const ls = v.kind === 'JV' ? v.lines : v.kind === 'CRV' ? [{ acct:'cash', dr:v.amount, cr:0 }, { acct:v.acct, dr:0, cr:v.amount }] : [{ acct:v.acct, dr:v.amount, cr:0 }, { acct:'cash', dr:0, cr:v.amount }];
+        vv = { color:K.color, title:K.title, no:v.no, date:dl(v.date) + ' 2026', narration:v.narration, amount:fmt(vAmt(v)),
+          lines:ls.map(l => ({ name:info(l.acct, d).name, code:info(l.acct, d).code, dr:l.dr ? fmt(l.dr) : '', cr:l.cr ? fmt(l.cr) : '' })) }; }
+    }
+
+    // reports
+    let rp = {}, cb = {}, stt = { blocks:[] }, tb = {};
+    if (scr === 'report') {
+      const ty = top.type, R = reportTiles[{ cashbook:0, pl:1, bs:2, tb:3, gl:4, sales:5, stock:6, stockledger:7, purchase:8 }[ty]];
+      rp = { title:R.title, color:R.color, period:'1 – 14 October 2026', isCashbook:ty === 'cashbook', isStatement:ty === 'pl' || ty === 'bs', isTB:ty === 'tb', isGL:ty === 'gl', isSP:ty === 'sales' || ty === 'purchase', isStock:ty === 'stock', isSL:ty === 'stockledger' };
+      if (ty === 'stock' || ty === 'stockledger') {
+        const from = st.rFrom || '2026-10-01', to = st.rTo || TODAY, lo = from <= to ? from : to, hi = from <= to ? to : from;
+        const SG = { SI:-1, SR:1, PI:1, PR:-1 }, TL = { SI:'Sale', SR:'Sale return', PI:'Purchase', PR:'Purchase return' };
+        const ordered = d.invoices.map((iv, i) => ({ iv, i })).sort((a, b) => a.iv.date < b.iv.date ? -1 : a.iv.date > b.iv.date ? 1 : a.i - b.i).map(x => x.iv);
+        const mv = pid => { const out = []; ordered.forEach(iv => iv.items.forEach(x => { if (x.pid === pid) out.push({ iv, qty:SG[iv.kind] * x.qty, rate:x.rate }); })); return out; };
+        const presets = [['Today', TODAY, TODAY], ['Last 7 days', addDays(TODAY, -6), TODAY], ['This month', '2026-10-01', TODAY]];
+        const dates = { from, to, setFrom:e => this.setState({ rFrom:e.target.value || '2026-10-01' }), setTo:e => this.setState({ rTo:e.target.value || TODAY }),
+          presets:presets.map(([label, a, b]) => ({ label, tap:() => this.setState({ rFrom:a, rTo:b }), bg:lo === a && hi === b ? C.ink : '#fff', fg:lo === a && hi === b ? '#fff' : C.ink })) };
+        rp.period = dl(lo) + ' – ' + dl(hi) + ' 2026';
+        if (ty === 'stock') {
+          const sq2 = (st.skQ || '').trim().toLowerCase(), cf = st.skCat || 'all';
+          let tIn = 0, tOut = 0, tVal = 0, tOpen = 0;
+          const rows = d.products.filter(p => cf === 'all' || p.cat === cf).filter(p => !sq2 || (p.name + ' ' + p.sku + ' ' + nameOf(d.brands, p.brand)).toLowerCase().includes(sq2)).map(p => {
+            const ms = mv(p.id); const open = p.opening + ms.filter(m => m.iv.date < lo).reduce((s, m) => s + m.qty, 0);
+            const inR = ms.filter(m => m.iv.date >= lo && m.iv.date <= hi);
+            const qin = inR.filter(m => m.qty > 0).reduce((s, m) => s + m.qty, 0), qout = -inR.filter(m => m.qty < 0).reduce((s, m) => s + m.qty, 0), close = open + qin - qout;
+            tIn += qin; tOut += qout; tOpen += open; tVal += close * p.cost;
+            return { name:p.name, sub:p.sku + ' · ' + nameOf(d.brands, p.brand), open, qin:'+' + qin, qout:'−' + qout, close, value:fmt(close * p.cost), low:close <= p.reorder, closeBg:close <= p.reorder ? C.repL : '#eeebe4', closeFg:close <= p.reorder ? '#9e2a14' : C.ink, tap:() => this.setState(s => ({ slProd:p.id, stack:[...s.stack, { name:'report', type:'stockledger' }] })) }; });
+          Object.assign(rp, { heroLabel:'Closing stock value (at cost)', hero:fmt(tVal), chip:rows.length + ' products · ' + rows.filter(r => r.low).length + ' running low',
+            sk:{ ...dates, rows, empty:!rows.length, q:st.skQ || '', setQ:e => this.setState({ skQ:e.target.value }), tOpen, tIn:'+' + tIn, tOut:'−' + tOut, tClose:tOpen + tIn - tOut,
+              chips:[{ id:'all', name:'All' }, ...d.categories].map(c => ({ label:c.name, tap:() => this.setState({ skCat:c.id }), bg:cf === c.id ? C.ink : '#fff', fg:cf === c.id ? '#fff' : C.ink })) } });
+        } else {
+          const pid = st.slProd && pm[st.slProd] ? st.slProd : d.products[0].id, p = pm[pid], ms = mv(pid), lq = (st.slQ || '').trim().toLowerCase();
+          const open = p.opening + ms.filter(m => m.iv.date < lo).reduce((s, m) => s + m.qty, 0);
+          let run = open, qin = 0, qout = 0;
+          const rows = ms.filter(m => m.iv.date >= lo && m.iv.date <= hi).map(m => { run += m.qty; if (m.qty > 0) qin += m.qty; else qout -= m.qty; const [y, mm, dd] = m.iv.date.split('-');
+            return { day:+dd, mon:MON[+mm - 1], title:TL[m.iv.kind] + ' · ' + partyOf(m.iv, d).name, ref:m.iv.no + ' · @ ' + fmt(m.rate), inQ:m.qty > 0 ? '+' + m.qty : '', outQ:m.qty < 0 ? '−' + (-m.qty) : '', bal:run, open:() => this.push({ name:'invoiceView', id:m.iv.id }), hay:(m.iv.no + ' ' + partyOf(m.iv, d).name + ' ' + TL[m.iv.kind]).toLowerCase() }; })
+            .filter(r => !lq || r.hay.includes(lq)).reverse();
+          const close = open + qin - qout;
+          const all = !!st.slAll, aopen = st.slOpen || {};
+          const modes = [['one', 'One product'], ['all', 'All products']].map(([v, label]) => ({ label, go:() => this.setState({ slAll:v === 'all' }), bg:(v === 'all') === all ? C.invD : 'transparent', fg:(v === 'all') === all ? '#fff' : C.ink }));
+          let A = {};
+          if (all) {
+            let gO = 0, gI = 0, gX = 0, gV = 0;
+            const prods = d.products.map(pp => { const pms = mv(pp.id); const o = pp.opening + pms.filter(m => m.iv.date < lo).reduce((s, m) => s + m.qty, 0); let r = o, i2 = 0, x2 = 0;
+              const pr = pms.filter(m => m.iv.date >= lo && m.iv.date <= hi).map(m => { r += m.qty; if (m.qty > 0) i2 += m.qty; else x2 -= m.qty; const [y, mm, dd] = m.iv.date.split('-');
+                return { date:(+dd) + ' ' + MON[+mm - 1], title:TL[m.iv.kind] + ' · ' + partyOf(m.iv, d).name, ref:m.iv.no, inQ:m.qty > 0 ? '+' + m.qty : '', outQ:m.qty < 0 ? '−' + (-m.qty) : '', bal:r, open:() => this.push({ name:'invoiceView', id:m.iv.id }), hay:(m.iv.no + ' ' + partyOf(m.iv, d).name + ' ' + TL[m.iv.kind]).toLowerCase() }; });
+              const pMatch = !lq || (pp.name + ' ' + pp.sku + ' ' + nameOf(d.brands, pp.brand)).toLowerCase().includes(lq);
+              const rowsF = pMatch ? pr : pr.filter(x => x.hay.includes(lq));
+              const c2 = o + i2 - x2, isOpen = !!aopen[pp.id];
+              return { show:pMatch || rowsF.length > 0, o, i2, x2, c2, v:c2 * pp.cost, card:{ name:pp.name, sub:pp.sku + ' · ' + pr.length + (pr.length === 1 ? ' movement' : ' movements') + ' · ' + fmt(c2 * pp.cost), open:o, qin:'+' + i2, qout:'−' + x2, close:c2,
+                closeBg:c2 <= pp.reorder ? C.repL : C.invL, closeFg:c2 <= pp.reorder ? '#9e2a14' : '#7a4d00', isOpen, rot:isOpen ? '90deg' : '0deg', rows:rowsF, none:!rowsF.length,
+                toggle:() => this.setState(s => ({ slOpen:{ ...(s.slOpen || {}), [pp.id]:!(s.slOpen || {})[pp.id] } })), single:() => this.setState({ slAll:false, slProd:pp.id, slQ:'' }) } }; }).filter(x => x.show);
+            prods.forEach(x => { gO += x.o; gI += x.i2; gX += x.x2; gV += x.v; });
+            const allOpen = prods.length > 0 && prods.every(x => x.card.isOpen);
+            A = { cards:prods.map(x => x.card), empty:!prods.length, gO, gI:'+' + gI, gX:'−' + gX, gC:gO + gI - gX, count:prods.length + ' products',
+              expandAll:() => this.setState({ slOpen:Object.fromEntries(prods.map((x, i) => [d.products.find(pp => pp.name === x.card.name).id, !allOpen])) }), expandLabel:allOpen ? 'Collapse all' : 'Expand all' };
+            Object.assign(rp, { heroLabel:'All products · closing stock', hero:(gO + gI - gX) + ' pcs', chip:'Worth ' + fmt(gV) + ' at cost' });
+          }
+          if (!all) Object.assign(rp, { heroLabel:p.name, hero:close + ' pcs in stock', chip:'Worth ' + fmt(close * p.cost) + ' at cost' });
+          Object.assign(rp, { slAll:all, slOne:!all, slModes:modes, sa:A,
+            sl:{ ...dates, rows, empty:!rows.length, name:p.name, sub:p.sku + ' · ' + nameOf(d.brands, p.brand) + ' · reorder at ' + p.reorder, ini:ini(nameOf(d.brands, p.brand)), tint:TINTS[(catIdx[p.cat] || 0) % TINTS.length],
+              pick:() => this.openSheet({ type:'stockprod' }), q:st.slQ || '', setQ:e => this.setState({ slQ:e.target.value }), open, qin:'+' + qin, qout:'−' + qout, close } });
+        }
+      }
+      if (ty === 'sales' || ty === 'purchase') {
+        const isS = ty === 'sales', K1 = isS ? 'SI' : 'PI', K2 = isS ? 'SR' : 'PR', color = isS ? C.sales : C.pur, light = isS ? C.salesL : C.purL;
+        const from = st.rFrom || '2026-10-01', to = st.rTo || TODAY, grp = st.rGroup || 'inv', rq = (st.rQ || '').trim().toLowerCase();
+        const lo = from <= to ? from : to, hi = from <= to ? to : from;
+        const docMatch = iv => !rq || (iv.no + ' ' + partyOf(iv, d).name).toLowerCase().includes(rq);
+        const lineMatch = x => !rq || (pm[x.pid].name + ' ' + pm[x.pid].sku).toLowerCase().includes(rq);
+        const docs = d.invoices.filter(iv => (iv.kind === K1 || iv.kind === K2) && iv.date >= lo && iv.date <= hi && (docMatch(iv) || iv.items.some(lineMatch)))
+          .sort((a, b) => a.date === b.date ? (a.no < b.no ? 1 : -1) : (a.date < b.date ? 1 : -1));
+        const sg = iv => iv.kind === K1 ? 1 : -1;
+        const gross = docs.filter(iv => iv.kind === K1).reduce((s, iv) => s + T(iv).total, 0), rets = docs.filter(iv => iv.kind === K2).reduce((s, iv) => s + T(iv).total, 0);
+        const settled = docs.reduce((s, iv) => s + sg(iv) * T(iv).paid, 0), due = docs.filter(iv => iv.kind === K1).reduce((s, iv) => s + T(iv).due, 0);
+        const cost = docs.reduce((s, iv) => s + sg(iv) * T(iv).cost, 0), netAmt = gross - rets;
+        let rows = [];
+        if (grp === 'inv') rows = docs.map(iv => { const t = T(iv), ret = iv.kind === K2;
+          return { badge:iv.kind, bBg:ret ? '#ece8df' : light, bFg:ret ? '#3d3b44' : color, title:partyOf(iv, d).name, sub:iv.no + ' · ' + dl(iv.date) + ' · ' + iv.items.reduce((s, x) => s + x.qty, 0) + ' pcs', amt:(ret ? '−' : '') + fmt(t.total), amtColor:ret ? C.rep : C.ink, sub2:ret ? 'Return' : (t.due > 0.5 ? fmt(t.due) + ' due' : 'Paid'), open:() => this.push({ name:'invoiceView', id:iv.id }) }; });
+        if (grp === 'prod') { const m = {};
+          docs.forEach(iv => { const dm = docMatch(iv); iv.items.forEach(x => { if (!dm && !lineMatch(x)) return; const p = pm[x.pid]; const g = m[x.pid] = m[x.pid] || { qty:0, amt:0, cost:0, p }; const f = sg(iv) * (1 - (iv.discount || 0) / Math.max(1, T(iv).sub)); g.qty += sg(iv) * x.qty; g.amt += f * x.qty * x.rate; g.cost += sg(iv) * x.qty * p.cost; }); });
+          rows = Object.values(m).sort((a, b) => b.amt - a.amt).map(g => ({ badge:ini(nameOf(d.brands, g.p.brand)), bBg:TINTS[(catIdx[g.p.cat] || 0) % TINTS.length], bFg:C.ink, title:g.p.name, sub:g.qty + ' pcs · avg ' + fmt(g.qty ? g.amt / g.qty : 0), amt:fmtS(g.amt), amtColor:C.ink, sub2:isS ? 'Profit ' + fmtS(g.amt - g.cost) : nameOf(d.brands, g.p.brand), open:() => this.editProduct(g.p.id) })); }
+        if (grp === 'party') { const m = {};
+          docs.forEach(iv => { const g = m[iv.party] = m[iv.party] || { n:0, amt:0, due:0, name:partyOf(iv, d).name, id:iv.party }; g.n += iv.kind === K1 ? 1 : 0; g.amt += sg(iv) * T(iv).total; g.due += iv.kind === K1 ? T(iv).due : 0; });
+          rows = Object.values(m).sort((a, b) => b.amt - a.amt).map(g => ({ badge:ini(g.name), bBg:light, bFg:color, title:g.name, sub:g.n + (g.n === 1 ? ' invoice' : ' invoices'), amt:fmtS(g.amt), amtColor:C.ink, sub2:g.due > 0.5 ? fmt(g.due) + ' due' : 'Settled', open:() => this.push({ name:'ledger', acct:(isS ? 'ar:' : 'ap:') + g.id }) })); }
+        const presets = [['Today', TODAY, TODAY], ['Yesterday', addDays(TODAY, -1), addDays(TODAY, -1)], ['Last 7 days', addDays(TODAY, -6), TODAY], ['This month', '2026-10-01', TODAY]];
+        rp.period = dl(lo) + ' – ' + dl(hi) + ' 2026';
+        Object.assign(rp, { heroLabel:isS ? 'Net sales' : 'Net purchases', hero:fmt(netAmt), chip:docs.filter(iv => iv.kind === K1).length + ' invoices · ' + docs.filter(iv => iv.kind === K2).length + ' returns',
+          sp:{ from, to, setFrom:e => this.setState({ rFrom:e.target.value || '2026-10-01' }), setTo:e => this.setState({ rTo:e.target.value || TODAY }),
+            q:st.rQ || '', setQ:e => this.setState({ rQ:e.target.value }), ph:isS ? 'Customer, product or invoice no.' : 'Supplier, product or invoice no.',
+            presets:presets.map(([label, a, b]) => ({ label, tap:() => this.setState({ rFrom:a, rTo:b }), bg:lo === a && hi === b ? C.ink : '#fff', fg:lo === a && hi === b ? '#fff' : C.ink })),
+            groups:[['inv', 'Invoices'], ['prod', 'Products'], ['party', isS ? 'Customers' : 'Suppliers']].map(([v, label]) => ({ label, go:() => this.setState({ rGroup:v }), bg:grp === v ? color : 'transparent', fg:grp === v ? '#fff' : C.ink })),
+            gross:fmt(gross), rets:fmt(rets), net:fmt(netAmt), settledLabel:isS ? 'Received' : 'Paid', settled:fmt(settled), due:fmt(due), dueLabel:isS ? 'Still to receive' : 'Still to pay',
+            extraLabel:isS ? 'Gross profit' : 'Avg. invoice', extra:isS ? fmtS(netAmt - cost) : fmt(docs.filter(iv => iv.kind === K1).length ? gross / docs.filter(iv => iv.kind === K1).length : 0),
+            grossLabel:isS ? 'Sales' : 'Purchases', light, color, rows, empty:!rows.length, count:rows.length + (grp === 'inv' ? ' documents' : grp === 'prod' ? ' products' : (isS ? ' customers' : ' suppliers')) } });
+      }
+      if (ty === 'gl') {
+        const gq = (st.glQ || '').trim().toLowerCase();
+        const TYPES = [['all', 'All'], ['A', 'Assets'], ['L', 'Liabilities'], ['E', 'Equity'], ['I', 'Income'], ['X', 'Expenses']];
+        const ft = st.glType || 'all', open = st.glOpen || {};
+        const keys = [...new Set(P.map(p => p.acct))].filter(k => ft === 'all' || info(k, d).type === ft).filter(k => !gq || (info(k, d).name + ' ' + info(k, d).code).toLowerCase().includes(gq)).sort((a, b) => info(a, d).code < info(b, d).code ? -1 : 1);
+        let tdr = 0, tcr = 0;
+        const accounts = keys.map(k => {
+          const I = info(k, d), dn = I.type === 'A' || I.type === 'X'; let run = 0;
+          const ps = P.filter(p => p.acct === k); const adr = ps.reduce((s, p) => s + p.dr, 0), acr = ps.reduce((s, p) => s + p.cr, 0); tdr += adr; tcr += acr;
+          const rows = ps.map(p => { run += dn ? p.dr - p.cr : p.cr - p.dr; const [y, m, dd] = p.date.split('-'); const ob = p.ref === 'Opening';
+            return { date:(+dd) + ' ' + MON[+m - 1], ref:ob ? 'B/F' : p.ref, memo:ob ? 'Opening balance' : p.memo + (p.who && p.who !== p.memo ? ' · ' + p.who : ''), dr:p.dr ? fmt(p.dr) : '', cr:p.cr ? fmt(p.cr) : '', bal:fmtP(run), open:() => this.openDoc(p.doc) }; });
+          const isOpen = !!open[k];
+          return { code:I.code, name:I.name, typeLabel:{ A:'Asset', L:'Liability', E:'Equity', I:'Income', X:'Expense' }[I.type], count:ps.length + (ps.length === 1 ? ' entry' : ' entries'),
+            closing:fmtP(nb(k)), side:(B[k] || 0) >= 0 ? 'Dr' : 'Cr', dr:fmt(adr), cr:fmt(acr), rows, isOpen, rot:isOpen ? '90deg' : '0deg',
+            toggle:() => this.setState(s => ({ glOpen:{ ...(s.glOpen || {}), [k]:!(s.glOpen || {})[k] } })), openLedger:() => this.push({ name:'ledger', acct:k }) }; });
+        const allOpen = accounts.length > 0 && accounts.every(a => a.isOpen);
+        Object.assign(rp, { heroLabel:'Total debits = total credits', hero:fmt(tdr), chip:keys.length + ' accounts · ' + (Math.abs(tdr - tcr) < 1 ? 'balanced' : 'off by ' + fmt(tdr - tcr)),
+          gl:{ accounts, empty:!accounts.length, q:st.glQ || '', setQ:e => this.setState({ glQ:e.target.value }),
+            chips:TYPES.map(([v, label]) => ({ label, tap:() => this.setState({ glType:v }), bg:ft === v ? C.ink : '#fff', fg:ft === v ? '#fff' : C.ink })),
+            expandAll:() => this.setState({ glOpen:Object.fromEntries(keys.map(k => [k, !allOpen])) }), expandLabel:allOpen ? 'Collapse all' : 'Expand all' } });
+      }
+      const row = (label, amt, o = {}) => ({ label, amt, size:o.size || '14px', weight:o.weight || 500, indent:o.indent || '0px', border:o.first ? '0' : '1px solid ' + (o.dark ? 'rgba(255,255,255,.15)' : 'rgba(23,22,28,.06)'), open:o.open || (() => {}) });
+      const L = k => () => this.push({ name:'ledger', acct:k });
+      if (ty === 'cashbook') {
+        let run = 0; const cps = P.filter(p => p.acct === 'cash'); const opening = cps.filter(p => p.ref === 'Opening').reduce((s, p) => s + p.dr - p.cr, 0); run = opening;
+        const rows = cps.filter(p => p.ref !== 'Opening').map(p => { run += p.dr - p.cr; const [y, m, dd] = p.date.split('-');
+          return { day:+dd, mon:MON[+m - 1], title:p.who, ref:p.ref + ' · ' + p.memo, amt:(p.dr ? '+' : '−') + fmt(p.dr || p.cr), amtColor:p.dr ? C.sales : C.rep, bal:fmt(run), open:() => this.openDoc(p.doc) }; }).reverse();
+        cb = { opening:fmt(opening), inT:fmt(cashIn), outT:fmt(cashOut), rows };
+        Object.assign(rp, { heroLabel:'Closing cash in hand', hero:fmt(run), chip:rows.length + ' entries' });
+      }
+      if (ty === 'pl') {
+        stt.blocks = [
+          { bg:'#fff', fg:C.ink, rows:[row('Revenue', '', { first:true, weight:700, size:'12px' }), row('Sales', fmt(sales), { open:L('sales') }), row('Less: sales returns', fmtP(salesret), { open:L('salesret') }), row('Net sales', fmt(netSales), { weight:700 }), row('Cost of goods sold', fmtP(-cogs), { open:L('cogs') }), row('Gross profit', fmtS(gp), { weight:800, size:'16px' })] },
+          { bg:'#fff', fg:C.ink, rows:[row('Expenses', '', { first:true, weight:700, size:'12px' }), ...expKeys.filter(k => Math.abs(nb(k)) > 0.5).map(k => row(ACC[k].name, fmt(nb(k)), { open:L(k) })), row('Total expenses', fmt(totalExp), { weight:700 })] },
+          { bg:net >= 0 ? C.sales : C.rep, fg:'#fff', rows:[row('Gross profit', fmtS(gp), { first:true, dark:true }), row('Other income', fmt(other), { dark:true }), row('Less: expenses', fmtP(-totalExp), { dark:true }), row(net >= 0 ? 'Net profit' : 'Net loss', fmtS(net), { dark:true, weight:800, size:'18px' })] }
+        ];
+        Object.assign(rp, { heroLabel:net >= 0 ? 'Net profit' : 'Net loss', hero:fmtS(net), chip:netSales ? 'Margin ' + Math.round(net / netSales * 100) + '% of sales' : '—' });
+      }
+      if (ty === 'bs') {
+        const liabT = apSum, cap = nb('capital'), draw = -nb('draw'), eqT = cap + draw + net;
+        stt.blocks = [
+          { bg:'#fff', fg:C.ink, rows:[row('What you own', '', { first:true, weight:700, size:'12px' }), row('Cash in hand', fmt(nb('cash')), { open:L('cash') }), row('Meezan Bank', fmt(nb('bank')), { open:L('bank') }), row('Customers owe you', fmt(arSum), { open:goSeg('sales', 'party') }), row('Stock in hand', fmt(nb('inv')), { open:goSeg('inventory', 'products') }), row('Furniture & fixtures', fmt(nb('furn')), { open:L('furn') }), row('Total assets', fmt(totalAssets), { weight:800, size:'16px' })] },
+          { bg:'#fff', fg:C.ink, rows:[row('What you owe', '', { first:true, weight:700, size:'12px' }), row('Suppliers you owe', fmt(apSum), { open:goSeg('purchase', 'party') }), row('Total liabilities', fmt(liabT), { weight:700 })] },
+          { bg:'#fff', fg:C.ink, rows:[row("Owner's equity", '', { first:true, weight:700, size:'12px' }), row("Owner's capital", fmt(cap), { open:L('capital') }), ...(Math.abs(draw) > 0.5 ? [row('Drawings', fmtP(draw), { open:L('draw') })] : []), row('Profit this period', fmtS(net), { open:openReport('pl') }), row('Total equity', fmt(eqT), { weight:700 })] },
+          { bg:C.pur, fg:'#fff', rows:[row('Liabilities + equity', fmt(liabT + eqT), { first:true, dark:true, weight:800, size:'16px' })] }
+        ];
+        Object.assign(rp, { heroLabel:'Total assets', hero:fmt(totalAssets), chip:Math.abs(totalAssets - liabT - eqT) < 1 ? 'Balanced: assets = liabilities + equity' : 'Out of balance by ' + fmt(totalAssets - liabT - eqT) });
+      }
+      if (ty === 'tb') {
+        const keys = Object.keys(B).filter(k => Math.abs(B[k]) > 0.5).sort((a, b) => info(a, d).code < info(b, d).code ? -1 : 1);
+        const tdr = keys.reduce((s, k) => s + Math.max(0, B[k]), 0), tcr = keys.reduce((s, k) => s + Math.max(0, -B[k]), 0);
+        tb = { rows:keys.map(k => ({ name:info(k, d).name, code:info(k, d).code, dr:B[k] > 0 ? fmt(B[k]) : '', cr:B[k] < 0 ? fmt(B[k]) : '', open:L(k) })), dr:fmt(tdr), cr:fmt(tcr) };
+        Object.assign(rp, { heroLabel:'Debit = Credit', hero:fmt(tdr), chip:Math.abs(tdr - tcr) < 1 ? 'Books are balanced · ' + keys.length + ' accounts' : 'Difference ' + fmt(tdr - tcr) });
+      }
+    }
+
+    // sheet
+    let sh = {};
+    const sq = st.sheetQ.trim().toLowerCase();
+    if (st.sheet) {
+      const t = st.sheet.type;
+      if (t === 'party' && st.draft) {
+        const K = KIND[st.draft.kind], isC = K.party === 'customer', list = isC ? d.customers : d.suppliers, pre = isC ? 'ar:' : 'ap:';
+        sh = { title:'Choose ' + K.party, closeLabel:'Close', hasSearch:true, isList:true, rows:[
+          { isItem:true, isHeader:false, badge:'+', bBg:C.ink, bFg:'#fff', title:'Add new ' + K.party, sub:'Create and select', right:'', rightSub:'', rightSubColor:C.mut, selBg:'transparent', tap:() => this.openAdd(K.party) },
+          ...list.filter(p => !sq || p.name.toLowerCase().includes(sq)).map(p => { const b = nb(pre + p.id);
+          return { isItem:true, isHeader:false, badge:ini(p.name), bBg:K.light, bFg:K.color, title:p.name, sub:p.phone, right:b > 0.5 ? fmt(b) : '', rightSub:b > 0.5 ? (isC ? 'owes you' : 'you owe') : '', rightSubColor:K.color, selBg:st.draft.party === p.id ? '#f4f1ea' : 'transparent',
+            tap:() => this.setState(s => ({ draft:{ ...s.draft, party:p.id }, sheet:null, errors:[] })) }; })] };
+      }
+      if (t === 'product' && st.draft) {
+        const K = KIND[st.draft.kind], selling = st.draft.kind === 'SI' || st.draft.kind === 'SR';
+        sh = { title:'Add products', closeLabel:'Done', hasSearch:true, isList:true, rows:d.products.filter(p => !sq || (p.name + ' ' + p.sku).toLowerCase().includes(sq)).map(p => { const inD = st.draft.items.find(x => x.pid === p.id), s = S[p.id] || 0;
+          return { isItem:true, isHeader:false, badge:inD ? '×' + inD.qty : ini(nameOf(d.brands, p.brand)), bBg:inD ? K.color : TINTS[(catIdx[p.cat] || 0) % TINTS.length], bFg:inD ? '#fff' : C.ink, title:p.name, sub:nameOf(d.brands, p.brand) + ' · ' + s + ' in stock', right:fmt(selling ? p.price : p.cost), rightSub:selling ? 'sale price' : 'cost', rightSubColor:s <= p.reorder ? C.red : C.mut, selBg:inD ? '#f4f1ea' : 'transparent', tap:() => this.addItem(p.id) }; }) };
+      }
+      if (t === 'acct') {
+        const target = st.sheet.target, vk = st.vdraft ? st.vdraft.kind : 'JV';
+        const pick = k => this.setState(s => ({ sheet:null, errors:[], vdraft:target === 'v' ? { ...s.vdraft, acct:k } : { ...s.vdraft, lines:s.vdraft.lines.map((l, j) => j === st.sheet.idx ? { ...l, acct:k } : l) } }));
+        const item = (k, color, light) => { const I = info(k, d); return { isItem:true, isHeader:false, badge:I.code.slice(-2), bBg:light, bFg:color, title:I.name, sub:I.code, right:fmtP(nb(k)), rightSub:'', rightSubColor:C.mut, selBg:'transparent', tap:() => pick(k) }; };
+        const match = k => !sq || info(k, d).name.toLowerCase().includes(sq);
+        const sec = (label, keys, color, light) => { const ks = keys.filter(match); return ks.length ? [{ isHeader:true, isItem:false, label }, ...ks.map(k => item(k, color, light))] : []; };
+        const cust = d.customers.map(c => 'ar:' + c.id), sup = d.suppliers.map(s => 'ap:' + s.id);
+        let rows;
+        if (target === 'v' && vk === 'CRV') rows = [...sec('Customers', cust, C.sales, C.salesL), ...sec('Income', ['otherinc', 'sales'], C.rep, C.repL), ...sec('Other', ['bank', 'capital'], C.acc, C.accL)];
+        else if (target === 'v' && vk === 'CPV') rows = [...sec('Suppliers', sup, C.pur, C.purL), ...sec('Expenses', expKeys, C.rep, C.repL), ...sec('Other', ['bank', 'draw', 'furn'], C.acc, C.accL)];
+        else rows = [...sec('Assets', ['cash', 'bank', 'inv', 'furn'], C.sales, C.salesL), ...sec('Customers', cust, C.sales, C.salesL), ...sec('Suppliers', sup, C.pur, C.purL), ...sec('Equity', ['capital', 'draw'], C.acc, C.accL), ...sec('Income', incomeKeys, C.rep, C.repL), ...sec('Expenses', ['cogs', ...expKeys], C.rep, C.repL)];
+        sh = { title:'Choose account', closeLabel:'Close', hasSearch:true, isList:true, rows };
+      }
+      if (t === 'stockprod') sh = { title:'Choose product', closeLabel:'Close', hasSearch:true, isList:true, rows:d.products.filter(p => !sq || (p.name + ' ' + p.sku).toLowerCase().includes(sq)).map(p => ({ isItem:true, isHeader:false, badge:ini(nameOf(d.brands, p.brand)), bBg:TINTS[(catIdx[p.cat] || 0) % TINTS.length], bFg:C.ink, title:p.name, sub:p.sku + ' · ' + nameOf(d.brands, p.brand), right:(S[p.id] || 0) + ' pcs', rightSub:(S[p.id] || 0) <= p.reorder ? 'low' : '', rightSubColor:C.red, selBg:st.slProd === p.id ? '#f4f1ea' : 'transparent', tap:() => this.setState({ slProd:p.id, sheet:null, sheetQ:'', slQ:'' }) })) };
+      if (t === 'vchooser') sh = { title:'New voucher', closeLabel:'Close', isChooser:true, choices:['CRV', 'CPV', 'JV'].map(k => ({ title:VK[k].short, desc:VK[k].desc, color:VK[k].color, icon:VK[k].icon, tap:() => this.newVoucher(k) })) };
+      if (t === 'add') sh = { title:'Add ' + (st.adraft ? st.adraft.type : ''), closeLabel:'Cancel', isAdd:true };
+    }
+    const a = st.adraft || {};
+    const ad = { name:a.name || '', phone:a.phone || '', opening:a.opening || '', isParty:a.type === 'customer' || a.type === 'supplier',
+      ph:{ category:'e.g. Phone Cases', brand:'e.g. Ugreen', customer:'e.g. Shahid Telecom', supplier:'e.g. Hall Road Traders' }[a.type] || '',
+      openingLabel:a.type === 'customer' ? 'They already owe you (Rs)' : 'You already owe them (Rs)', saveLabel:'Save ' + (a.type || ''),
+      setName:e => this.setState(s => ({ adraft:{ ...s.adraft, name:e.target.value }, errors:[] })), setPhone:e => this.setState(s => ({ adraft:{ ...s.adraft, phone:e.target.value } })), setOpening:e => this.setState(s => ({ adraft:{ ...s.adraft, opening:e.target.value } })) };
+
+    const lightHeader = scr ? scr === 'productForm' : (st.tab === 'home' || st.tab === 'inventory');
+    return {
+      isHome:!scr && st.tab === 'home', isDocTab, isInventory, isAccounts,
+      isInvoiceForm:scr === 'invoiceForm' && !!st.draft, isInvoiceView:scr === 'invoiceView', isLedger:scr === 'ledger', isProductForm:scr === 'productForm' && !!st.pdraft,
+      isVoucherForm:scr === 'voucherForm' && !!st.vdraft, isVoucherView:scr === 'voucherView', isReport:scr === 'report',
+      showTabs:!scr, statusColor:lightHeader ? C.ink : '#fff',
+      tabs, home, doc, invt, acc, reportTiles, invf, iv, lg, pf, vf, vv, rp, cb, st:stt, tb, sh, ad,
+      q:st.q, setQ:e => this.setState({ q:e.target.value }), sheetQ:st.sheetQ, setSheetQ:e => this.setState({ sheetQ:e.target.value }),
+      errors:st.errors, toast:st.toast, hasToast:!!st.toast, sheetOpen:!!st.sheet,
+      pop:this.pop, closeSheet:this.closeSheet,
+      openPartyPicker:() => this.openSheet({ type:'party' }), openProductPicker:() => this.openSheet({ type:'product' }), openVoucherChooser:() => this.openSheet({ type:'vchooser' }),
+      setDiscount:e => this.updDraft(x => ({ ...x, discount:e.target.value })), setPaid:e => this.updDraft(x => ({ ...x, paid:e.target.value })),
+      payFull:() => this.updDraft(x => ({ ...x, paid:String(Math.max(0, x.items.reduce((s, y) => s + y.qty * num(y.rate), 0) - num(x.discount))) })),
+      saveInvoice:this.saveInvoice, saveVoucher:this.saveVoucher, saveProduct:this.saveProduct, saveAdd:this.saveAdd
+    };
+  }
+}
+</script>
+</body>
+</html>
